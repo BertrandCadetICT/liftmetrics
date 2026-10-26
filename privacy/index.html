@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LiftMetrics Confidentialité</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+/* Layout : une colonne de lecture (~65 car.), en-tête sobre, bascule FR/EN, sommaire en pastilles */
+:root{
+  --bg:#f6f6fb; --surface:#ffffff; --fg:#1a1d33; --muted:#5d6180; --line:#dfe1ee;
+  --accent:#6a55e8; --accent-soft:#ece9fd;
+  --display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body:"Source Sans 3", -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12162b; --surface:#1a1f3a; --fg:#e9eaf5; --muted:#a3a7c4; --line:#2c3256;
+  --accent:#a596ff; --accent-soft:#272b52; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12162b; --surface:#1a1f3a; --fg:#e9eaf5; --muted:#a3a7c4; --line:#2c3256;
+  --accent:#a596ff; --accent-soft:#272b52; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 56px}
+.wrap{max-width:44rem;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+header{display:flex;flex-direction:column;gap:10px}
+.brand{font-family:var(--display);font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:13px;color:var(--accent)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,6vw,40px);line-height:1.12;margin:0;text-wrap:balance}
+.meta{color:var(--muted);font-size:15px}
+.lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--surface);align-self:flex-start}
+.lang button{font:600 14px var(--body);border:0;background:transparent;color:var(--muted);padding:6px 14px;border-radius:999px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.lang button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.summary{background:var(--accent-soft);border-radius:14px;padding:18px 20px}
+.summary p{margin:0}
+section{display:flex;flex-direction:column;gap:8px}
+h2{font-family:var(--display);font-weight:600;font-size:21px;margin:0;text-wrap:balance}
+p,ul{margin:0}
+ul{padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+table{width:100%;border-collapse:collapse;font-size:15.5px;background:var(--surface);border-radius:12px;overflow:hidden}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+tr:last-child td{border-bottom:0}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+code,.mail{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.92em;background:var(--surface);border:1px solid var(--line);padding:1px 6px;border-radius:6px;user-select:all}
+footer{color:var(--muted);font-size:14px;border-top:1px solid var(--line);padding-top:16px}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <div class="brand">LiftMetrics · LM Caméra</div>
+    <h1 data-fr="Politique de confidentialité" data-en="Privacy Policy">Politique de confidentialité</h1>
+    <div class="meta" data-fr="Dernière mise à jour : 26 octobre 2026" data-en="Last updated: October 26, 2026">Dernière mise à jour : 26 octobre 2026</div>
+    <div class="lang" role="group" aria-label="Langue / Language">
+      <button id="btn-fr" aria-pressed="true" onclick="setLang('fr')">Français</button>
+      <button id="btn-en" aria-pressed="false" onclick="setLang('en')">English</button>
+    </div>
+  </header>
+
+  <div class="summary"><p data-fr="<strong>En bref :</strong> LiftMetrics ne collecte aucune donnée personnelle. Tes vidéos, tes mesures et tes fiches d'athlètes restent sur ton iPhone. Il n'y a ni compte, ni publicité, ni pistage, ni outil de statistiques, et rien n'est envoyé au développeur."
+     data-en="<strong>In short:</strong> LiftMetrics collects no personal data. Your videos, measurements and athlete profiles stay on your iPhone. There is no account, no advertising, no tracking and no analytics, and nothing is sent to the developer."></p></div>
+
+  <section>
+    <h2 data-fr="1. Qui sommes-nous" data-en="1. Who we are"></h2>
+    <p data-fr="LiftMetrics et son application compagnon LM Caméra sont développées par Bertrand Cadet, développeur indépendant. Elles analysent la trajectoire et la vitesse de la barre en haltérophilie et en musculation à partir de vidéos filmées avec un iPhone."
+       data-en="LiftMetrics and its companion app LM Caméra are developed by Bertrand Cadet, an independent developer. They analyse bar path and bar velocity in weightlifting and strength training from videos filmed with an iPhone."></p>
+  </section>
+
+  <section>
+    <h2 data-fr="2. Données traitées et où elles restent" data-en="2. Data the app handles and where it stays"></h2>
+    <div class="tbl"><table>
+      <thead><tr><th data-fr="Donnée" data-en="Data"></th><th data-fr="Usage" data-en="Purpose"></th><th data-fr="Stockage" data-en="Storage"></th></tr></thead>
+      <tbody>
+        <tr><td data-fr="Vidéos de tes barres" data-en="Videos of your lifts"></td><td data-fr="Suivi du disque, trajectoire, vitesse" data-en="Plate tracking, bar path, velocity"></td><td data-fr="Sur l'iPhone (app, Photos ou Fichiers)" data-en="On the iPhone (app, Photos or Files)"></td></tr>
+        <tr><td data-fr="Mesures et notes des analyses" data-en="Analysis results and scores"></td><td data-fr="Historique, graphes, conseils" data-en="History, charts, coaching tips"></td><td data-fr="Sur l'iPhone" data-en="On the iPhone"></td></tr>
+        <tr><td data-fr="Fiches athlètes (nom, taille, masse, catégorie, records)" data-en="Athlete profiles (name, height, body mass, category, records)"></td><td data-fr="% du max, comparaison aux athlètes de référence" data-en="% of max, comparison with reference athletes"></td><td data-fr="Sur l'iPhone" data-en="On the iPhone"></td></tr>
+        <tr><td data-fr="Données du capteur de barre (optionnel)" data-en="Bar sensor data (optional)"></td><td data-fr="Vitesse et inclinaison de la barre" data-en="Bar velocity and tilt"></td><td data-fr="Sur l'iPhone (Fichiers › LiftMetrics)" data-en="On the iPhone (Files › LiftMetrics)"></td></tr>
+        <tr><td data-fr="Réglages et objectifs" data-en="Settings and goals"></td><td data-fr="Préférences de l'app" data-en="App preferences"></td><td data-fr="Sur l'iPhone" data-en="On the iPhone"></td></tr>
+      </tbody>
+    </table></div>
+    <p data-fr="Toute l'analyse est faite sur l'iPhone. Ces données font partie de la sauvegarde de ton iPhone (iCloud ou ordinateur) selon tes réglages Apple ; le développeur n'y a pas accès."
+       data-en="All analysis runs on the iPhone. This data is included in your iPhone backup (iCloud or computer) according to your Apple settings; the developer has no access to it."></p>
+  </section>
+
+  <section>
+    <h2 data-fr="3. Autorisations demandées" data-en="3. Permissions requested"></h2>
+    <ul>
+      <li data-fr="<strong>Caméra</strong> : filmer la barre (LiftMetrics) ou l'athlète de face (LM Caméra)." data-en="<strong>Camera</strong>: film the lift (LiftMetrics) or the athlete from the front (LM Caméra)."></li>
+      <li data-fr="<strong>Photos</strong> : choisir une vidéo à analyser, ou enregistrer une vidéo que LM Caméra n'a pas pu envoyer." data-en="<strong>Photos</strong>: pick a video to analyse, or save a video that LM Caméra could not send."></li>
+      <li data-fr="<strong>Bluetooth</strong> : se connecter au capteur fixé sur la barre." data-en="<strong>Bluetooth</strong>: connect to the sensor attached to the bar."></li>
+      <li data-fr="<strong>Réseau local</strong> : relier ton iPhone à un second iPhone (LM Caméra) ou à une GoPro, directement, sans passer par internet." data-en="<strong>Local network</strong>: link your iPhone to a second iPhone (LM Caméra) or a GoPro directly, without going through the internet."></li>
+    </ul>
+    <p data-fr="Chaque autorisation est facultative et peut être retirée dans Réglages iOS. Sans elle, seule la fonction concernée est indisponible."
+       data-en="Each permission is optional and can be revoked in iOS Settings. Without it, only the related feature is unavailable."></p>
+  </section>
+
+  <section>
+    <h2 data-fr="4. Partage" data-en="4. Sharing"></h2>
+    <p data-fr="LiftMetrics ne partage rien de lui-même. Un PDF, une image, un CSV ou un fichier <code>.liftmetrics</code> ne quitte l'iPhone que si tu le partages toi-même (AirDrop, Messages, e-mail…). Un fichier <code>.liftmetrics</code> peut contenir la vidéo découpée et le nom de l'athlète : partage-le seulement avec l'accord de la personne filmée."
+       data-en="LiftMetrics shares nothing on its own. A PDF, image, CSV or <code>.liftmetrics</code> file leaves the iPhone only when you share it yourself (AirDrop, Messages, email…). A <code>.liftmetrics</code> file may contain the trimmed video and the athlete's name: share it only with the consent of the person filmed."></p>
+  </section>
+
+  <section>
+    <h2 data-fr="5. Achats et dons" data-en="5. Purchases and tips"></h2>
+    <p data-fr="Les achats intégrés et les dons passent par l'App Store. Le paiement est traité par Apple ; le développeur ne reçoit ni ton nom, ni ton adresse e-mail, ni tes données bancaires."
+       data-en="In-app purchases and tips go through the App Store. Payment is handled by Apple; the developer does not receive your name, email address or payment details."></p>
+  </section>
+
+  <section>
+    <h2 data-fr="6. Version de test (TestFlight)" data-en="6. Beta version (TestFlight)"></h2>
+    <p data-fr="Si tu testes l'app via TestFlight, Apple peut transmettre au développeur les rapports de plantage, les retours et captures d'écran que tu envoies, ainsi que des informations techniques (modèle d'iPhone, version d'iOS), selon la politique de confidentialité d'Apple. Ils servent uniquement à corriger l'app."
+       data-en="If you test the app through TestFlight, Apple may pass on to the developer crash reports, the feedback and screenshots you submit, and technical information (iPhone model, iOS version), under Apple's privacy policy. They are used only to fix the app."></p>
+  </section>
+
+  <section>
+    <h2 data-fr="7. Mineurs" data-en="7. Minors"></h2>
+    <p data-fr="L'app ne collecte aucune donnée, y compris pour les mineurs. Si tu filmes un athlète mineur, obtiens l'accord de ses parents ou de son représentant légal."
+       data-en="The app collects no data, including from minors. If you film a minor athlete, get the consent of their parents or legal guardian."></p>
+  </section>
+
+  <section>
+    <h2 data-fr="8. Tes droits" data-en="8. Your rights"></h2>
+    <p data-fr="Comme aucune donnée n'est collectée par le développeur, il n'y a rien à consulter, corriger ou supprimer de son côté. Pour tout effacer, supprime les barres dans l'app ou désinstalle-la. Tu peux aussi écrire au développeur pour toute question (RGPD compris)."
+       data-en="Since the developer collects no data, there is nothing to access, correct or delete on their side. To erase everything, delete lifts in the app or uninstall it. You can also write to the developer with any question (including GDPR)."></p>
+  </section>
+
+  <section>
+    <h2 data-fr="9. Modifications et contact" data-en="9. Changes and contact"></h2>
+    <p data-fr="Toute modification de cette politique sera publiée sur cette page avec une nouvelle date. Contact : <span class='mail'>liftmetrics@icloud.com</span>"
+       data-en="Any change to this policy will be posted on this page with a new date. Contact: <span class='mail'>liftmetrics@icloud.com</span>"></p>
+  </section>
+
+  <footer data-fr="© 2026 Bertrand Cadet · LiftMetrics" data-en="© 2026 Bertrand Cadet · LiftMetrics"></footer>
+</div>
+
+<script>
+function setLang(l){
+  document.documentElement.lang=l;
+  document.querySelectorAll('[data-fr]').forEach(function(el){el.innerHTML=el.getAttribute('data-'+l);});
+  document.getElementById('btn-fr').setAttribute('aria-pressed',l==='fr');
+  document.getElementById('btn-en').setAttribute('aria-pressed',l==='en');
+  try{localStorage.setItem('lang',l);}catch(e){}
+}
+var start='fr';
+try{ if(location.hash==='#en') start='en'; else { var s=localStorage.getItem('lang'); if(s) start=s; else if(!(navigator.language||'fr').startsWith('fr')) start='en'; } }catch(e){}
+setLang(start);
+</script>
+
+</body>
+</html>
