@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LiftMetrics — Samples</title>
+<meta name="description" content="Real reports, pictures and videos produced by LiftMetrics from training sessions.">
+<style>
+  :root { --bg:#0f1224; --card:#1c2140; --ink:#f3f2ff; --muted:#a9acc8; --accent:#8b7cf6; --pink:#ec4899; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.55 -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  .wrap { max-width:960px; margin:0 auto; padding:40px 16px 56px; }
+  header { display:flex; align-items:center; gap:16px; margin-bottom:8px; }
+  header img { width:56px; height:56px; border-radius:13px; }
+  h1 { font-size:28px; margin:0; }
+  .lead { color:var(--muted); margin:6px 0 28px; max-width:680px; }
+  h2 { font-size:18px; margin:32px 0 12px; color:var(--accent); letter-spacing:.02em; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:16px; }
+  a.card { display:block; background:var(--card); border-radius:16px; overflow:hidden; color:inherit; text-decoration:none; border:1px solid #2c3260; transition:transform .15s, border-color .15s; }
+  a.card:hover { transform:translateY(-2px); border-color:var(--accent); }
+  .thumb { background:#fff; display:flex; align-items:center; justify-content:center; height:200px; overflow:hidden; }
+  .thumb.dark { background:#161a33; }
+  .thumb img { max-width:100%; max-height:100%; display:block; }
+  .meta { padding:12px 14px 14px; }
+  .meta b { display:block; font-size:15px; }
+  .meta span { color:var(--muted); font-size:13.5px; }
+  .tag { display:inline-block; font-size:11px; font-weight:700; letter-spacing:.06em; color:#fff; background:var(--pink); border-radius:6px; padding:2px 7px; margin-bottom:6px; }
+  video { width:100%; max-width:360px; border-radius:16px; display:block; background:#000; }
+  .media { display:flex; flex-wrap:wrap; gap:16px; align-items:flex-start; }
+  .note { color:var(--muted); font-size:14px; margin-top:36px; border-top:1px solid #2c3260; padding-top:16px; }
+  .note a { color:var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="icon.png" alt="">
+    <h1>LiftMetrics — samples</h1>
+  </header>
+  <p class="lead">Real outputs from my own training (October 2026), filmed side-on with an iPhone and an M5Stick sensor on the bar. Open any card to see the full file.</p>
+
+  <h2>Single-lift reports (PDF)</h2>
+  <div class="grid">
+    <a class="card" href="lift_snatch_50kg.pdf"><div class="thumb"><img src="thumb_lift_snatch_50kg-1.jpg" alt="Snatch report, page 1"></div>
+      <div class="meta"><span class="tag">SNATCH</span><b>Snatch · 50 kg</b><span>Score, bar path, priorities, coaching cues, all curves on one page, full measurements.</span></div></a>
+    <a class="card" href="lift_clean_pause_80kg.pdf"><div class="thumb"><img src="thumb_lift_clean_pause_80kg-1.jpg" alt="Clean report, page 1"></div>
+      <div class="meta"><span class="tag">CLEAN</span><b>Clean with pause · 80 kg</b><span>Pause detected during the pull; same report layout.</span></div></a>
+  </div>
+
+  <h2>Session reports (PDF)</h2>
+  <div class="grid">
+    <a class="card" href="session_snatch.pdf"><div class="thumb"><img src="thumb_session_snatch-1.jpg" alt="Snatch session"></div>
+      <div class="meta"><span class="tag">SESSION</span><b>Snatch · 18 lifts</b><span>Table of every lift and the overlaid bar paths, coloured by load.</span></div></a>
+    <a class="card" href="session_clean.pdf"><div class="thumb"><img src="thumb_session_clean-1.jpg" alt="Clean session"></div>
+      <div class="meta"><span class="tag">SESSION</span><b>Clean · 8 lifts</b><span>Lifts at the same load are coloured in order, first to last.</span></div></a>
+    <a class="card" href="session_squat_deadlift.pdf"><div class="thumb"><img src="thumb_session_squat_deadlift-1.jpg" alt="Strength session"></div>
+      <div class="meta"><span class="tag">STRENGTH</span><b>Back squat · Front squat · Deadlift</b><span>Velocity-based training table and one bar-path figure per movement.</span></div></a>
+  </div>
+
+  <h2>For social media</h2>
+  <div class="media">
+    <a class="card" href="social_picture_snatch.jpg" style="width:300px"><div class="thumb dark" style="height:auto"><img src="thumb_social.jpg" alt="Social media picture"></div>
+      <div class="meta"><span class="tag">PICTURE</span><b>Snatch · 50 kg</b><span>1080 × 1350, catch photo with the bar path and key numbers.</span></div></a>
+    <div style="width:300px">
+      <video src="social_reel_snatch.mp4" controls playsinline preload="metadata" poster="thumb_social.jpg"></video>
+      <div class="meta" style="padding-left:0"><span class="tag">REEL</span><b>Snatch · 50 kg, slow motion</b><span>1080 × 1920; the bar path draws itself and the numbers appear as they are reached.</span></div>
+    </div>
+  </div>
+
+  <p class="note">Full presentation: <a href="../presentation/LiftMetrics_presentation_EN.pdf">LiftMetrics presentation (PDF)</a> · Contact: <a href="mailto:liftmetrics@icloud.com">liftmetrics@icloud.com</a> · Instagram <a href="https://www.instagram.com/lift_metrics">@lift_metrics</a></p>
+</div>
+</body>
+</html>
