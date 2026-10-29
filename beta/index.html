@@ -306,7 +306,7 @@ document.getElementById("dl").addEventListener("click", () => {
   a.click();
 });
 // Espace testeurs : e-mail + mot de passe commun (empreinte SHA-256, rien n'est envoyé).
-const GATE = "082a30656c05c97bdaacb9dfea7469907ba877fa5b64e1c395737e3221c1efeb";
+const GATE = "258fc5d85ae24417ca85a77f28116e3a079ed9a7eb5c3fe94febb9d9ed17e162";
 const AUTH = "lm_tester";
 async function sha(t) {
   const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t));
