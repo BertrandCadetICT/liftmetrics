@@ -91,6 +91,15 @@ p{margin:0 0 14px}
 .plan ul{margin:0;padding-left:20px} .plan li{margin:7px 0}
 .launch{margin-top:26px;color:var(--mist)}
 
+/* sortie : e-mail et QR code Instagram */
+.notify{display:grid;grid-template-columns:1fr auto;gap:56px;align-items:center;padding:84px 0 24px;border-bottom:1px solid var(--line)}
+.notify h2{margin-bottom:16px} .notify p{max-width:40em}
+.notify .cta{margin:22px 0 14px}
+.small{font-size:15px}
+.qr{display:flex;flex-direction:column;align-items:center;gap:12px;text-decoration:none;color:var(--mist);font-size:15px}
+.qr img{width:200px;height:200px;border-radius:16px;border:6px solid #fff;background:#fff}
+.qr b{color:var(--chalk)}
+
 /* pied */
 .links{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:36px}
 .links a{display:block;text-decoration:none;border-top:2px solid var(--line);padding-top:14px}
@@ -107,6 +116,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
   .hero{padding-top:10px}
   .feat{gap:32px;padding:56px 0}
   .stage{width:min(280px,80%)}
+  .notify{grid-template-columns:1fr;gap:32px}
 }
 </style>
 </head>
@@ -128,8 +138,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
       <h1><span lang="fr">Ta barre laisse une trace. LiftMetrics la lit.</span><span lang="en">Every lift leaves a trace. LiftMetrics reads it.</span></h1>
       <p class="sub"><span lang="fr">Filme ton arraché, ton épaulé ou ton squat de profil avec ton iPhone. En moins d'une minute : la trajectoire de la barre, sa vitesse, une note sur 100 et ce qu'il faut corriger en priorité.</span><span lang="en">Film your snatch, clean or squat from the side with your iPhone. In under a minute: the bar path, its velocity, a score out of 100 and what to fix first.</span></p>
       <div class="cta">
-        <span class="btn soon" aria-disabled="true"><span lang="fr">Bientôt sur l'App Store</span><span lang="en">Coming soon to the App Store</span></span>
-        <a class="btn main" href="https://www.instagram.com/lift_metrics"><span lang="fr">Suivre sur Instagram</span><span lang="en">Follow on Instagram</span></a>
+        <a class="btn main" href="#notify"><span lang="fr">Être prévenu de la sortie</span><span lang="en">Get notified at launch</span></a>
+        <a class="btn" href="https://www.instagram.com/lift_metrics"><span lang="fr">Suivre sur Instagram</span><span lang="en">Follow on Instagram</span></a>
         <a class="btn" href="samples/"><span lang="fr">Voir des analyses réelles</span><span lang="en">See real analyses</span></a>
       </div>
     </div>
@@ -279,6 +289,22 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 </section>
 
 <div class="wrap">
+  <section class="notify" id="notify">
+    <div>
+      <h2><span lang="fr">Bientôt sur l'App Store</span><span lang="en">Coming soon to the App Store</span></h2>
+      <p class="muted"><span lang="fr">Envoie-nous un e-mail en un geste : tu recevras une seule réponse, le jour de la sortie, avec le lien pour installer l'app. Ton adresse ne sert à rien d'autre.</span><span lang="en">Send us a one-tap e-mail: you will get a single reply, on launch day, with the link to install the app. Your address is used for nothing else.</span></p>
+      <div class="cta">
+        <a class="btn main" lang="fr" href="mailto:liftmetrics@icloud.com?subject=LiftMetrics%20%3A%20pr%C3%A9venez-moi%20de%20la%20sortie&amp;body=Bonjour%2C%0A%0AJe%20souhaite%20%C3%AAtre%20pr%C3%A9venu%28e%29%20quand%20LiftMetrics%20sortira%20sur%20l%27App%20Store.%0A%0A">Me prévenir par e-mail</a>
+        <a class="btn main" lang="en" href="mailto:liftmetrics@icloud.com?subject=LiftMetrics%3A%20let%20me%20know%20at%20launch&amp;body=Hello%2C%0A%0APlease%20let%20me%20know%20when%20LiftMetrics%20is%20released%20on%20the%20App%20Store.%0A%0A">Notify me by e-mail</a>
+      </div>
+      <p class="muted small"><span lang="fr">Ton application de messagerie s'ouvre avec le message prêt : il suffit de l'envoyer. Les nouveautés passent aussi par Instagram.</span><span lang="en">Your mail app opens with the message ready: just send it. News also goes out on Instagram.</span></p>
+    </div>
+    <a class="qr" href="https://www.instagram.com/lift_metrics">
+      <img src="img/qr_instagram.svg" alt="QR code Instagram @lift_metrics" width="200" height="200">
+      <span><span lang="fr">Scanne pour suivre</span><span lang="en">Scan to follow</span> <b>@lift_metrics</b></span>
+    </a>
+  </section>
+
   <section style="padding:76px 0 30px">
     <h2><span lang="fr">Pour aller plus loin</span><span lang="en">Find out more</span></h2>
     <div class="links">
