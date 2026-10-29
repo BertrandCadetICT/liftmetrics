@@ -1,329 +1,315 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" data-l="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>LiftMetrics Guide</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LiftMetrics — bar path and velocity for weightlifting</title>
+<meta name="description" content="LiftMetrics films your lift from the side with an iPhone and shows the bar path, the velocity, a score out of 100 and coaching to fix it. Snatch, clean, jerk, squats, deadlift, bench press.">
+<meta property="og:title" content="LiftMetrics">
+<meta property="og:description" content="Bar path, velocity, score and coaching for weightlifting, from an iPhone video.">
+<meta property="og:image" content="https://bertrandcadetict.github.io/liftmetrics/img/insta.jpg">
+<link rel="icon" href="img/icon.png">
+<link rel="apple-touch-icon" href="img/icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Source+Sans+3:wght@400;600&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* Layout : colonne de lecture, sommaire en pastilles, étapes numérotées (ce sont de vraies séquences), bascule FR/EN */
 :root{
-  --bg:#f6f6fb; --surface:#ffffff; --fg:#1a1d33; --muted:#5d6180; --line:#dfe1ee;
-  --accent:#6a55e8; --accent-soft:#ece9fd; --pink:#d63b77;
-  --display:"Archivo", "Helvetica Neue", Arial, sans-serif;
-  --body:"Source Sans 3", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --night:#10132a; --deep:#0b0e20; --panel:#1b2045; --line:#2e3566;
+  --chalk:#f2f1fa; --mist:#a9acc8;
+  --violet:#8b7cf6; --pull1:#4f8ef7; --trans:#f5c04a; --pull2:#ec4899; --under:#34c27a; --catch:#9aa0c3;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#12162b; --surface:#1a1f3a; --fg:#e9eaf5; --muted:#a3a7c4; --line:#2c3256;
-  --accent:#a596ff; --accent-soft:#272b52; --pink:#ff7aa8; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#12162b; --surface:#1a1f3a; --fg:#e9eaf5; --muted:#a3a7c4; --line:#2c3256;
-  --accent:#a596ff; --accent-soft:#272b52; --pink:#ff7aa8; color-scheme:dark}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.6;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 56px}
-.wrap{max-width:44rem;margin:0 auto;display:flex;flex-direction:column;gap:30px}
-header{display:flex;flex-direction:column;gap:10px}
-.brand{font-family:var(--display);font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:13px;color:var(--accent)}
-h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,6vw,40px);line-height:1.12;margin:0;text-wrap:balance}
-.lead{color:var(--muted);margin:0}
-.lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--surface);align-self:flex-start}
-.lang button{font:600 14px var(--body);border:0;background:transparent;color:var(--muted);padding:6px 14px;border-radius:999px;cursor:pointer}
-.lang button[aria-pressed="true"]{background:var(--accent);color:#fff}
-.lang button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-nav ul{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px}
-nav a{display:inline-block;padding:5px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--fg);text-decoration:none;font-size:15px}
-nav a:hover{border-color:var(--accent)}
-section{display:flex;flex-direction:column;gap:10px;scroll-margin-top:16px}
-h2{font-family:var(--display);font-weight:600;font-size:22px;margin:0;text-wrap:balance}
-h3{font-size:17px;margin:6px 0 0}
-p,ul,ol{margin:0}
-ul,ol{padding-left:1.3em;display:flex;flex-direction:column;gap:5px}
-.tip{background:var(--accent-soft);border-radius:14px;padding:14px 18px}
-.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
-table{width:100%;border-collapse:collapse;font-size:15.5px;background:var(--surface)}
-th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-weight:600;color:var(--muted);font-size:13px;letter-spacing:.06em;text-transform:uppercase}
-tr:last-child td{border-bottom:0}
-.pro{display:inline-block;font:600 12px var(--body);color:#fff;background:var(--pink);border-radius:6px;padding:0 6px;margin-left:4px;vertical-align:1px}
-.ui{font-weight:600}
-.mail{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.92em;background:var(--surface);border:1px solid var(--line);padding:1px 6px;border-radius:6px;user-select:all}
-a{color:var(--accent)}
-footer{color:var(--muted);font-size:14px;border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:4px}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--night);color:var(--chalk);font:17px/1.6 Barlow,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+html[data-l="fr"] [lang="en"], html[data-l="en"] [lang="fr"]{display:none !important}
+a{color:inherit}
+img{max-width:100%;display:block}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:"Barlow Condensed",Barlow,sans-serif;font-weight:700;line-height:1.02;margin:0}
+h1{font-size:clamp(46px,7.4vw,92px);letter-spacing:-.5px}
+h2{font-size:clamp(34px,4.6vw,54px)}
+h3{font-size:28px;line-height:1.1}
+p{margin:0 0 14px}
+.muted{color:var(--mist)}
+:focus-visible{outline:3px solid var(--trans);outline-offset:3px;border-radius:6px}
+
+/* barre du haut */
+.top{display:flex;align-items:center;justify-content:space-between;padding:20px 0}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;font-family:"Barlow Condensed",Barlow,sans-serif;font-weight:700;font-size:26px}
+.logo img{width:40px;height:40px;border-radius:10px}
+.nav{display:flex;gap:22px;align-items:center;font-weight:500;font-size:16px}
+.nav a{text-decoration:none;color:var(--mist)} .nav a:hover{color:var(--chalk)}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;padding:3px}
+.lang button{font:inherit;font-size:14px;font-weight:600;background:none;border:0;color:var(--mist);padding:4px 11px;border-radius:999px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--violet);color:#fff}
+
+/* accroche : la trajectoire se dessine phase par phase */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding:40px 0 80px}
+.hero p.sub{font-size:21px;color:var(--mist);max-width:34em;margin:22px 0 30px}
+.cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:17px;text-decoration:none;border-radius:14px;padding:13px 22px;border:1px solid var(--line)}
+.btn.main{background:var(--chalk);color:var(--night);border-color:var(--chalk)}
+.btn.soon{color:var(--mist);cursor:default}
+.stage{position:relative;justify-self:center;width:min(420px,100%)}
+.stage svg{width:100%;height:auto;display:block}
+.seg{fill:none;stroke-width:9;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:draw .7s ease-out forwards}
+.tag{font:600 15px Barlow,sans-serif;opacity:0;animation:show .4s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes show{to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.seg{animation:none;stroke-dashoffset:0}.tag{animation:none;opacity:1}}
+
+/* étapes : vraie séquence, donc numérotée */
+.band{background:var(--deep);padding:84px 0}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin-top:40px;counter-reset:s}
+.step{border-top:3px solid var(--line);padding-top:18px}
+.step:nth-child(1){border-color:var(--pull1)} .step:nth-child(2){border-color:var(--trans)} .step:nth-child(3){border-color:var(--pull2)}
+.step b{display:block;font-family:"Barlow Condensed",Barlow,sans-serif;font-size:30px;margin-bottom:6px}
+.step b::before{counter-increment:s;content:counter(s) ". ";color:var(--mist)}
+
+/* fonctions : alternance texte / capture */
+.feat{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;padding:72px 0;border-bottom:1px solid var(--line)}
+.feat.flip .shot{order:-1}
+.feat h2{margin-bottom:18px}
+.feat ul{padding-left:20px;margin:12px 0 0;color:var(--mist)} .feat li{margin:6px 0}
+.feat li b{color:var(--chalk);font-weight:600}
+.shot{justify-self:center}
+.phone{width:min(300px,78vw);border-radius:36px;border:2px solid var(--line);box-shadow:0 30px 60px rgba(0,0,0,.45)}
+.wide{border-radius:18px;border:1px solid var(--line)}
+.square{width:min(420px,100%);border-radius:18px;border:1px solid var(--line)}
+
+/* mouvements */
+.moves{font-family:"Barlow Condensed",Barlow,sans-serif;font-weight:600;font-size:clamp(24px,3vw,34px);line-height:1.35;color:var(--mist);margin-top:24px}
+.moves span span{color:var(--chalk)}
+
+/* gratuit / pro */
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:40px}
+.plan{border:1px solid var(--line);border-radius:22px;padding:30px}
+.plan.pro{border-color:var(--violet);background:linear-gradient(160deg,rgba(139,124,246,.14),rgba(236,72,153,.06))}
+.plan h3{margin-bottom:6px}
+.plan .price{color:var(--mist);margin-bottom:16px}
+.plan ul{margin:0;padding-left:20px} .plan li{margin:7px 0}
+.launch{margin-top:26px;color:var(--mist)}
+
+/* pied */
+.links{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:36px}
+.links a{display:block;text-decoration:none;border-top:2px solid var(--line);padding-top:14px}
+.links a:hover{border-color:var(--violet)}
+.links a b{display:block;font-family:"Barlow Condensed",Barlow,sans-serif;font-size:26px}
+footer{padding:44px 0 60px;color:var(--mist);font-size:15px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+@media (max-width:860px){
+  .hero,.feat,.plans{grid-template-columns:1fr}
+  .feat.flip .shot{order:0}
+  .steps,.links{grid-template-columns:1fr}
+  .nav a{display:none}
+  .hero{padding-top:10px}
+  .feat{gap:32px;padding:56px 0}
+  .stage{width:min(280px,80%)}
+}
 </style>
 </head>
 <body>
+<div class="wrap">
+  <header class="top">
+    <a class="logo" href="#"><img src="img/icon.png" alt="">LiftMetrics</a>
+    <nav class="nav">
+      <a href="#features"><span lang="fr">Fonctions</span><span lang="en">Features</span></a>
+      <a href="#pricing"><span lang="fr">Gratuit et Pro</span><span lang="en">Free and Pro</span></a>
+      <a href="samples/"><span lang="fr">Exemples</span><span lang="en">Samples</span></a>
+      <a href="guide/">Guide</a>
+      <span class="lang" role="group" aria-label="Langue / Language"><button data-l="fr" aria-pressed="true">FR</button><button data-l="en" aria-pressed="false">EN</button></span>
+    </nav>
+  </header>
 
+  <section class="hero">
+    <div>
+      <h1><span lang="fr">Ta barre laisse une trace. LiftMetrics la lit.</span><span lang="en">Every lift leaves a trace. LiftMetrics reads it.</span></h1>
+      <p class="sub"><span lang="fr">Filme ton arraché, ton épaulé ou ton squat de profil avec ton iPhone. En moins d'une minute : la trajectoire de la barre, sa vitesse, une note sur 100 et ce qu'il faut corriger en priorité.</span><span lang="en">Film your snatch, clean or squat from the side with your iPhone. In under a minute: the bar path, its velocity, a score out of 100 and what to fix first.</span></p>
+      <div class="cta">
+        <span class="btn soon" aria-disabled="true"><span lang="fr">Bientôt sur l'App Store</span><span lang="en">Coming soon to the App Store</span></span>
+        <a class="btn main" href="https://www.instagram.com/lift_metrics"><span lang="fr">Suivre sur Instagram</span><span lang="en">Follow on Instagram</span></a>
+        <a class="btn" href="samples/"><span lang="fr">Voir des analyses réelles</span><span lang="en">See real analyses</span></a>
+      </div>
+    </div>
+    <div class="stage" aria-hidden="true">
+      <svg viewBox="0 0 360 560">
+        <line x1="190" y1="530" x2="190" y2="30" stroke="#ffffff" stroke-opacity=".35" stroke-width="2" stroke-dasharray="7 7"/>
+        <circle cx="190" cy="500" r="34" fill="none" stroke="#ffffff" stroke-opacity=".18" stroke-width="10"/>
+        <path class="seg" pathLength="1" stroke="#4f8ef7" style="animation-delay:.2s" d="M190 500 C186 440 166 390 168 340"/>
+        <path class="seg" pathLength="1" stroke="#f5c04a" style="animation-delay:.9s" d="M168 340 C169 322 175 306 180 292"/>
+        <path class="seg" pathLength="1" stroke="#ec4899" style="animation-delay:1.6s" d="M180 292 C194 236 222 188 216 140"/>
+        <path class="seg" pathLength="1" stroke="#34c27a" style="animation-delay:2.3s" d="M216 140 C212 96 168 80 150 102 C138 118 144 140 160 152"/>
+        <path class="seg" pathLength="1" stroke="#9aa0c3" style="animation-delay:3s" d="M160 152 C164 140 166 126 168 112"/>
+        <circle cx="213" cy="190" r="7" fill="#fff" class="tag" style="animation-delay:2.1s"/>
+        <text class="tag" x="40" y="420" fill="#4f8ef7" style="animation-delay:.8s"><tspan lang="fr">1er tirage</tspan><tspan lang="en">First pull</tspan></text>
+        <text class="tag" x="40" y="318" fill="#f5c04a" style="animation-delay:1.5s">Transition</text>
+        <text class="tag" x="240" y="250" fill="#ec4899" style="animation-delay:2.2s"><tspan lang="fr">2e tirage</tspan><tspan lang="en">Second pull</tspan></text>
+        <text class="tag" x="230" y="196" fill="#ffffff" style="animation-delay:2.2s"><tspan lang="fr">vitesse max</tspan><tspan lang="en">peak velocity</tspan></text>
+        <text class="tag" x="236" y="104" fill="#34c27a" style="animation-delay:2.9s"><tspan lang="fr">Sous la barre</tspan><tspan lang="en">Under the bar</tspan></text>
+        <text class="tag" x="40" y="160" fill="#9aa0c3" style="animation-delay:3.5s"><tspan lang="fr">Réception</tspan><tspan lang="en">Catch</tspan></text>
+      </svg>
+    </div>
+  </section>
+</div>
+
+<section class="band">
+  <div class="wrap">
+    <h2><span lang="fr">Trois gestes, pas de réglage</span><span lang="en">Three steps, no setup</span></h2>
+    <div class="steps">
+      <div class="step"><b><span lang="fr">Filme</span><span lang="en">Film</span></b><span lang="fr">Téléphone de profil, à 3–5 m. Dis « Go », soulève, dis « Down » : la vidéo est déjà découpée. Ou importe une vidéo existante.</span><span lang="en">Phone side-on, 3–5 m away. Say “Go”, lift, say “Down”: the video is already trimmed. Or import an existing video.</span></div>
+      <div class="step"><b><span lang="fr">Touche le disque</span><span lang="en">Tap the plate</span></b><span lang="fr">Un toucher sur le disque suffit. L'app le suit image par image et calcule l'échelle à partir de son diamètre.</span><span lang="en">One tap on the plate. The app tracks it frame by frame and scales everything from its diameter.</span></div>
+      <div class="step"><b><span lang="fr">Lis tes résultats</span><span lang="en">Read your results</span></b><span lang="fr">Trajectoire colorée par phase, vitesse, note sur 100, priorités, consignes et exercices. Tout est rangé dans l'historique.</span><span lang="en">Bar path coloured by phase, velocity, score out of 100, priorities, cues and drills. Everything is kept in your history.</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap" id="features">
+  <section class="feat">
+    <div>
+      <h2><span lang="fr">Ce que fait vraiment ta barre</span><span lang="en">What your bar really does</span></h2>
+      <p class="muted"><span lang="fr">La vidéo se rejoue avec la trajectoire qui se dessine et la vitesse à chaque instant. Glisse le doigt sur la courbe pour avancer image par image.</span><span lang="en">The video replays with the bar path drawing itself and the velocity at every instant. Slide along the curve to move frame by frame.</span></p>
+      <ul>
+        <li><span lang="fr"><b>Recul au 1er tirage, avancée au 2e tirage, réception, chute sous la barre</b>, en centimètres</span><span lang="en"><b>Back pull, forward swing, catch position, drop under the bar</b>, in centimetres</span></li>
+        <li><span lang="fr"><b>Vitesse max</b>, hauteur avec et sans les bras, durée de chaque phase</span><span lang="en"><b>Peak velocity</b>, height with and without the arms, timing of each phase</span></li>
+        <li><span lang="fr"><b>Comparaison</b> avec un athlète des Mondiaux, courbe sur courbe</span><span lang="en"><b>Comparison</b> with a World Championships lifter, curve on curve</span></li>
+        <li><span lang="fr">Trajectoire colorée par phase, ou selon la <b>vitesse, la force ou la puissance</b></span><span lang="en">Path coloured by phase, or by <b>velocity, force or power</b></span></li>
+      </ul>
+    </div>
+    <div class="shot"><img class="phone" src="img/14_replay.jpg" alt="" loading="lazy"></div>
+  </section>
+
+  <section class="feat flip">
+    <div>
+      <h2><span lang="fr">Une note, et quoi corriger</span><span lang="en">A score, and what to fix</span></h2>
+      <p class="muted"><span lang="fr">Chaque mesure a son objectif. En dehors, l'app explique pourquoi c'est un problème, ce qu'il faut te dire pendant la barre et quels exercices font progresser.</span><span lang="en">Every measurement has a goal. Outside it, the app explains why it matters, what to tell yourself during the lift and which drills fix it.</span></p>
+      <ul>
+        <li><span lang="fr"><b>Les 3 priorités</b> de la barre, rouge avant orange</span><span lang="en"><b>The 3 priorities</b> of the lift, red before orange</span></li>
+        <li><span lang="fr"><b>Consignes et exercices</b> pour chaque défaut, dans les deux sens (trop ou pas assez)</span><span lang="en"><b>Cues and drills</b> for each fault, both ways (too much or not enough)</span></li>
+        <li><span lang="fr">Objectifs réglables, ou calculés <b>d'après tes meilleures barres</b></span><span lang="en">Adjustable goals, or built <b>from your best lifts</b></span></li>
+      </ul>
+    </div>
+    <div class="shot"><img class="phone" src="img/15_advice.jpg" alt="" loading="lazy"></div>
+  </section>
+
+  <section class="feat">
+    <div>
+      <h2><span lang="fr">Tes défauts qui reviennent</span><span lang="en">The faults that keep coming back</span></h2>
+      <p class="muted"><span lang="fr">Une barre montre un défaut ; dix barres montrent une habitude. Le bilan par mouvement compare tes 10 dernières barres aux 10 précédentes.</span><span lang="en">One lift shows a fault; ten lifts show a habit. The review by movement compares your last 10 lifts with the 10 before.</span></p>
+      <ul>
+        <li><span lang="fr"><b>Défauts récurrents</b>, de plus en plus rares ou de plus en plus fréquents</span><span lang="en"><b>Recurring faults</b>, becoming rarer or more frequent</span></li>
+        <li><span lang="fr"><b>Ce qui progresse</b> et ce qui recule, la vitesse comparée à charge égale</span><span lang="en"><b>What is improving</b> and what is slipping, velocity compared at equal load</span></li>
+        <li><span lang="fr"><b>Ta priorité</b>, avec une consigne et un exercice choisis pour elle</span><span lang="en"><b>Your priority</b>, with one cue and one drill picked for it</span></li>
+      </ul>
+    </div>
+    <div class="shot"><img class="phone" src="img/41_review_detail.jpg" alt="" loading="lazy"></div>
+  </section>
+
+  <section class="feat flip">
+    <div>
+      <h2><span lang="fr">La barre dit quoi, le corps dit pourquoi</span><span lang="en">The bar shows what, the body shows why</span></h2>
+      <p class="muted"><span lang="fr">Sur demande, l'app lit ton corps sur la vidéo et mesure genou, hanche, buste et coude aux instants clés : décollage, transition, vitesse max, réception.</span><span lang="en">On request, the app reads your body on the video and measures knee, hip, trunk and elbow at the key moments: lift-off, transition, peak velocity, catch.</span></p>
+      <ul>
+        <li><span lang="fr"><b>Squat</b> : hanche sous le genou ou pas</span><span lang="en"><b>Squat</b>: hip below the knee or not</span></li>
+        <li><span lang="fr"><b>Jeté</b> : genoux en fente, profondeur au squat jerk</span><span lang="en"><b>Jerk</b>: knees in the split, depth in a squat jerk</span></li>
+        <li><span lang="fr"><b>Réception haute</b> repérée d'après l'angle du genou</span><span lang="en"><b>High catch</b> spotted from the knee angle</span></li>
+      </ul>
+    </div>
+    <div class="shot"><img class="wide" src="img/posture_clean.jpg" alt="" loading="lazy"></div>
+  </section>
+
+  <section class="feat">
+    <div>
+      <h2><span lang="fr">Squat, soulevé de terre, développé couché</span><span lang="en">Squat, deadlift, bench press</span></h2>
+      <p class="muted"><span lang="fr">Toute la série en une vidéo : la vitesse de chaque répétition, la perte de vitesse, le profil charge–vitesse et un 1RM estimé.</span><span lang="en">The whole set in one video: the velocity of every rep, the velocity loss, the load–velocity profile and an estimated 1RM.</span></p>
+    </div>
+    <div class="shot"><img class="phone" src="img/30_set.jpg" alt="" loading="lazy"></div>
+  </section>
+
+  <section class="feat flip" style="border-bottom:0">
+    <div>
+      <h2><span lang="fr">À montrer à ton coach, ou à tout le monde</span><span lang="en">For your coach, or for everyone</span></h2>
+      <ul>
+        <li><span lang="fr"><b>PDF</b> d'une barre, d'une séance ou de l'historique</span><span lang="en"><b>PDF</b> of a lift, a session or the history</span></li>
+        <li><span lang="fr"><b>Image et vidéo</b> pour Instagram : la trajectoire et tes chiffres sur ta réception</span><span lang="en"><b>Picture and video</b> for Instagram: the path and your numbers on your catch</span></li>
+        <li><span lang="fr"><b>Fichier LiftMetrics</b> : ton coach ouvre la barre dans son app, avec toutes les courbes</span><span lang="en"><b>LiftMetrics file</b>: your coach opens the lift in their own app, with every curve</span></li>
+        <li><span lang="fr"><b>Masters</b> : charges corrigées de l'âge et du poids de corps</span><span lang="en"><b>Masters</b>: loads corrected for age and bodyweight</span></li>
+      </ul>
+    </div>
+    <div class="shot"><img class="square" src="img/insta.jpg" alt="" loading="lazy"></div>
+  </section>
+
+  <section style="padding:40px 0 20px">
+    <h2><span lang="fr">Les mouvements</span><span lang="en">The movements</span></h2>
+    <p class="moves"><span lang="fr"><span>Arraché, épaulé, épaulé-jeté</span> et leurs versions power ; <span>jeté</span> en fente, push jerk, squat jerk, push press ou strict press ; <span>back squat, front squat, overhead squat, soulevé de terre, développé couché</span>. Une barre, un complexe ou une séance entière.</span><span lang="en"><span>Snatch, clean, clean &amp; jerk</span> and their power versions; <span>jerk</span> as split, push jerk, squat jerk, push press or strict press; <span>back squat, front squat, overhead squat, deadlift, bench press</span>. One lift, a complex or a whole session.</span></p>
+  </section>
+</div>
+
+<section class="band" id="pricing" style="margin-top:60px">
+  <div class="wrap">
+    <h2><span lang="fr">Gratuit, et Pro en achat unique</span><span lang="en">Free, and Pro as a one-time purchase</span></h2>
+    <div class="plans">
+      <div class="plan">
+        <h3><span lang="fr">Gratuit, sans limite</span><span lang="en">Free, unlimited</span></h3>
+        <p class="price"><span lang="fr">Pour toujours</span><span lang="en">Forever</span></p>
+        <ul>
+          <li><span lang="fr">Arraché, épaulé, épaulé-jeté, versions power et tous les jetés</span><span lang="en">Snatch, clean, clean &amp; jerk, power versions and every jerk</span></li>
+          <li><span lang="fr">Trajectoire, vitesse, note, conseils, relecture</span><span lang="en">Bar path, velocity, score, coaching, replay</span></li>
+          <li><span lang="fr">Commandes vocales et découpe automatique</span><span lang="en">Voice commands and automatic trim</span></li>
+          <li><span lang="fr">Historique, image et vidéo pour les réseaux</span><span lang="en">History, social-media picture and video</span></li>
+          <li><span lang="fr">Capteur M5Stick en option</span><span lang="en">Optional M5Stick sensor</span></li>
+        </ul>
+      </div>
+      <div class="plan pro">
+        <h3>LiftMetrics Pro</h3>
+        <p class="price"><span lang="fr">Achat unique, sans abonnement</span><span lang="en">One-time purchase, no subscription</span></p>
+        <ul>
+          <li><span lang="fr">Squat, soulevé de terre, développé couché</span><span lang="en">Squat, deadlift, bench press</span></li>
+          <li><span lang="fr">Bilan par mouvement et tendances</span><span lang="en">Review by movement and trends</span></li>
+          <li><span lang="fr">Posture : angles du corps</span><span lang="en">Posture: body angles</span></li>
+          <li><span lang="fr">Comparaison avec les élites, complexes, séances programmées</span><span lang="en">Elite comparison, complexes, programmed sessions</span></li>
+          <li><span lang="fr">Plusieurs athlètes, objectifs personnels, Masters</span><span lang="en">Several athletes, personal goals, Masters</span></li>
+          <li><span lang="fr">PDF, CSV, couleurs vitesse, force et puissance</span><span lang="en">PDF, CSV, velocity, force and power colours</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="launch"><span lang="fr">Pendant le lancement, tout est gratuit, Pro compris. Ceux qui installent l'app à ce moment-là gardent Pro.</span><span lang="en">During the launch, everything is free, Pro included. Those who install the app then keep Pro.</span></p>
+  </div>
+</section>
 
 <div class="wrap">
-<header>
-  <div class="brand">LiftMetrics</div>
-  <div class="lang" role="group" aria-label="Langue / Language">
-    <button id="btn-fr" aria-pressed="true" onclick="setLang('fr')">Français</button>
-    <button id="btn-en" aria-pressed="false" onclick="setLang('en')">English</button>
-  </div>
-</header>
-
-<!-- ===================== FRANÇAIS ===================== -->
-<div id="fr" class="wrap" style="gap:30px">
-  <div style="display:flex;flex-direction:column;gap:10px">
-    <h1>Guide d'utilisation</h1>
-    <p class="lead">Filme ta barre de profil avec ton iPhone : LiftMetrics trace sa trajectoire, mesure sa vitesse, donne une note sur 100 et des conseils pour corriger.</p>
-  </div>
-  <nav aria-label="Sommaire"><ul>
-    <li><a href="#fr-materiel">Matériel</a></li><li><a href="#fr-filmer">Filmer</a></li><li><a href="#fr-analyser">Analyser</a></li>
-    <li><a href="#fr-resultats">Résultats</a></li><li><a href="#fr-force">Force</a></li><li><a href="#fr-seances">Complexes et séances</a></li>
-    <li><a href="#fr-historique">Historique</a></li><li><a href="#fr-partager">Partager</a></li><li><a href="#fr-capteur">Capteur</a></li>
-    <li><a href="#fr-pro">Gratuit et Pro</a></li><li><a href="#fr-problemes">Problèmes fréquents</a></li><li><a href="#fr-contact">Contact</a></li>
-  </ul></nav>
-
-  <section id="fr-materiel"><h2>Matériel</h2>
-    <ul>
-      <li>Un iPhone sous iOS 17 ou plus récent.</li>
-      <li>Un trépied ou un support stable : l'iPhone ne doit pas bouger.</li>
-      <li>Des disques de diamètre connu : 45 cm par défaut, réglable dans <span class="ui">Réglages › Disques et capteur</span>. Le disque sert d'échelle.</li>
-      <li>En option : un capteur M5StickS3 fixé sur le manchon (voir <a href="#fr-capteur">Capteur</a>).</li>
-    </ul>
-  </section>
-
-  <section id="fr-filmer"><h2>Filmer</h2>
-    <ul>
-      <li>iPhone <strong>de profil, dans l'axe de la barre</strong>, à 3 à 5 m : le disque doit apparaître bien rond. Un disque ovale signifie que la caméra est de biais.</li>
-      <li>Objectif à hauteur des hanches, téléphone vertical et de niveau.</li>
-      <li>Tout le mouvement dans l'image, du sol jusqu'aux bras tendus au-dessus de la tête.</li>
-      <li>60 images par seconde, en HD 1080p.</li>
-      <li>Démarre 2 s avant le décollage, arrête 2 s après la réception : la barre immobile sert de repère.</li>
-      <li>Bonne lumière, pas de contre-jour, rien devant le disque.</li>
-    </ul>
-    <p class="tip">Le guide de tournage est aussi dans l'app : <span class="ui">Analyse › Guide de tournage</span>.</p>
-  </section>
-
-  <section id="fr-analyser"><h2>Analyser une barre</h2>
-    <ol>
-      <li><span class="ui">Analyse › Une barre</span> : choisis le mouvement, la charge et l'athlète.</li>
-      <li><span class="ui">Filmer</span> avec l'iPhone, ou <span class="ui">importer</span> une vidéo depuis Photos ou Fichiers.</li>
-      <li><span class="ui">Découpe</span> : garde quelques secondes autour de la barre.</li>
-      <li><span class="ui">Repérage du disque</span> : touche le centre du disque, ajuste le cercle si besoin (pince pour zoomer).</li>
-      <li><span class="ui">Analyser</span> : le résultat arrive en moins d'une minute.</li>
-    </ol>
-  </section>
-
-  <section id="fr-resultats"><h2>Lire les résultats</h2>
-    <ul>
-      <li><strong>Note sur 100</strong> : qualité de la trajectoire, indépendante de la charge. Vert à partir de 80, orange de 60 à 79, rouge en dessous.</li>
-      <li><strong>À corriger en priorité</strong> : les mesures hors objectif, avec ce qu'il faut changer et de combien.</li>
-      <li><strong>Trajectoire colorée</strong> : bleu = 1er tirage, jaune = transition, rose = 2e tirage, vert = passage sous la barre, gris = réception.</li>
-      <li><strong>Relecture</strong> : la vidéo avec la trajectoire qui se dessine ; ralenti et image par image. Touche la courbe de vitesse pour te déplacer.</li>
-      <li><strong>Sens de l'athlète</strong> : deviné automatiquement, modifiable en bas de page.</li>
-    </ul>
-    <p>Les objectifs se règlent dans <span class="ui">Réglages › Objectifs</span>.</p>
-  </section>
-
-  <section id="fr-force"><h2>Squat, développé couché, soulevé de terre <span class="pro">Pro</span></h2>
-    <ul>
-      <li>Filme <strong>toute la série en une seule vidéo</strong> : chaque répétition est détectée et analysée.</li>
-      <li>Pour chaque répétition : vitesse moyenne de montée, vitesse max, amplitude, dérive horizontale.</li>
-      <li><strong>Perte de vitesse</strong> par rapport à la répétition la plus rapide : un repère de fatigue (entraînement basé sur la vitesse).</li>
-    </ul>
-  </section>
-
-  <section id="fr-seances"><h2>Complexes et séances <span class="pro">Pro</span></h2>
-    <ul>
-      <li><strong>Complexe</strong> : plusieurs mouvements enchaînés (ex. 1 arraché + 1 épaulé). Arrête la vidéo après chaque barre ; elles sont analysées l'une après l'autre.</li>
-      <li><strong>Séance programmée</strong> : saisis le programme (ex. « 3×3 épaulé @ 80 % + 2×1 épaulé-jeté @ 70 % »). L'app calcule les charges d'après les 1RM de l'athlète et te guide série par série.</li>
-    </ul>
-  </section>
-
-  <section id="fr-historique"><h2>Historique</h2>
-    <ul>
-      <li>Les barres sont classées par jour (ou selon le tri choisi), puis en barres seules, séries et séances. Tout se déplie.</li>
-      <li><strong>Glisser vers la droite</strong> sur une ligne : PDF <span class="pro">Pro</span>.</li>
-      <li><strong>Glisser vers la gauche</strong> : supprimer, avec confirmation. Dans l'onglet Séances, cela retire seulement la barre de la séance.</li>
-      <li><span class="ui">Athlètes</span> : taille, masse, catégorie et 1RM datés. Le pourcentage du max de chaque barre utilise le 1RM valable à sa date.</li>
-    </ul>
-  </section>
-
-  <section id="fr-partager"><h2>Partager</h2>
-    <div class="tbl"><table>
-      <thead><tr><th>Export</th><th>Contenu</th></tr></thead>
-      <tbody>
-        <tr><td>Image Instagram</td><td>Photo de la réception, trajectoire et mesures clés</td></tr>
-        <tr><td>PDF <span class="pro">Pro</span></td><td>Barre, série, séance ou historique : note, mesures, graphes, explications</td></tr>
-        <tr><td>Fichier LiftMetrics</td><td>La barre complète : la personne qui le reçoit l'ouvre dans son app (envoi <span class="pro">Pro</span>, réception gratuite)</td></tr>
-        <tr><td>CSV <span class="pro">Pro</span></td><td>Position et vitesse de la barre, pour un tableur</td></tr>
-      </tbody>
-    </table></div>
-  </section>
-
-  <section id="fr-capteur"><h2>Capteur M5Stick (option)</h2>
-    <ul>
-      <li>Fixé sur le manchon, il mesure la vitesse plus précisément (200 mesures par seconde) et l'inclinaison de la barre.</li>
-      <li><span class="ui">Analyse › Appareils connectés › Connecter le M5Stick</span>, puis lance une fois la calibration (<span class="ui">Réglages › Calibration du M5Stick</span>).</li>
-      <li>Il démarre et s'arrête avec la caméra ; son fichier arrive tout seul dans l'analyse.</li>
-    </ul>
-  </section>
-
-  <section id="fr-pro"><h2>Gratuit et Pro</h2>
-    <p>L'analyse de l'arraché, de l'épaulé et de l'épaulé-jeté est gratuite et sans limite. <strong>LiftMetrics Pro</strong>, un achat unique sans abonnement, ajoute la force (squat, développé couché, soulevé de terre), la comparaison avec les athlètes élites, les complexes et séances programmées, plusieurs athlètes, les objectifs personnalisés, les graphes selon la charge, les PDF, le CSV et l'envoi de fichiers.</p>
-    <p class="tip">Pendant la période de lancement, tout est gratuit, Pro compris. Les personnes qui installent l'app pendant cette période gardent le Pro offert.</p>
-  </section>
-
-  <section id="fr-problemes"><h2>Problèmes fréquents</h2>
-    <h3>Le disque est mal suivi</h3>
-    <p>Dans les résultats, <span class="ui">Corriger le suivi du disque</span> : replace le cercle sur le disque à l'image où il se perd, puis relance le suivi à partir de ce point.</p>
-    <h3>Les mesures avant / arrière sont inversées</h3>
-    <p>Change <span class="ui">Athlète tourné vers</span> en bas des résultats. Le choix est mémorisé.</p>
-    <h3>Les distances semblent fausses</h3>
-    <p>Vérifie le diamètre des disques dans les Réglages, et que le disque apparaît bien rond sur la vidéo.</p>
-    <h3>La vidéo importée ne s'ouvre pas</h3>
-    <p>Si elle est dans iCloud, attends qu'elle soit téléchargée sur l'iPhone. Les vidéos à 60 images par seconde donnent les meilleurs résultats.</p>
-  </section>
-
-  <section id="fr-contact"><h2>Contact</h2>
-    <p>Une question, un problème ou une idée : <span class="mail">liftmetrics@icloud.com</span></p>
-    <p>Instagram : <a href="https://www.instagram.com/lift_metrics" target="_blank" rel="noopener">@lift_metrics</a> · <a href="privacy/">Politique de confidentialité</a></p>
+  <section style="padding:76px 0 30px">
+    <h2><span lang="fr">Pour aller plus loin</span><span lang="en">Find out more</span></h2>
+    <div class="links">
+      <a href="samples/"><b><span lang="fr">Exemples réels</span><span lang="en">Real samples</span></b><span class="muted"><span lang="fr">PDF, image et vidéo tirés de vraies séances.</span><span lang="en">PDFs, picture and video from real sessions.</span></span></a>
+      <a href="guide/"><b><span lang="fr">Guide d'utilisation</span><span lang="en">User guide</span></b><span class="muted"><span lang="fr">Filmer, analyser, lire les résultats.</span><span lang="en">Filming, analysing, reading the results.</span></span></a>
+      <a href="presentation/LiftMetrics_presentation_EN.pdf"><b><span lang="fr">Présentation complète</span><span lang="en">Full presentation</span></b><span class="muted"><span lang="fr">38 pages, en anglais.</span><span lang="en">38 pages.</span></span></a>
+    </div>
   </section>
 </div>
 
-<!-- ===================== ENGLISH ===================== -->
-<div id="en" class="wrap" style="gap:30px" hidden>
-  <div style="display:flex;flex-direction:column;gap:10px">
-    <h1>User guide</h1>
-    <p class="lead">Film your lift from the side with your iPhone: LiftMetrics traces the bar path, measures bar velocity, gives a score out of 100 and tips to fix your technique.</p>
+<footer>
+  <div class="wrap">
+    <span>LiftMetrics · <a href="mailto:liftmetrics@icloud.com">liftmetrics@icloud.com</a> · <a href="https://www.instagram.com/lift_metrics">Instagram @lift_metrics</a></span>
+    <span><a href="privacy/"><span lang="fr">Confidentialité</span><span lang="en">Privacy</span></a></span>
   </div>
-  <nav aria-label="Contents"><ul>
-    <li><a href="#en-equipment">Equipment</a></li><li><a href="#en-filming">Filming</a></li><li><a href="#en-analysing">Analysing</a></li>
-    <li><a href="#en-results">Results</a></li><li><a href="#en-strength">Strength</a></li><li><a href="#en-sessions">Complexes and sessions</a></li>
-    <li><a href="#en-history">History</a></li><li><a href="#en-sharing">Sharing</a></li><li><a href="#en-sensor">Sensor</a></li>
-    <li><a href="#en-pro">Free and Pro</a></li><li><a href="#en-issues">Common issues</a></li><li><a href="#en-contact">Contact</a></li>
-  </ul></nav>
-
-  <section id="en-equipment"><h2>Equipment</h2>
-    <ul>
-      <li>An iPhone running iOS 17 or later.</li>
-      <li>A tripod or a stable stand: the iPhone must not move.</li>
-      <li>Plates of known diameter: 45 cm by default, adjustable in <span class="ui">Settings › Plates and sensor</span>. The plate is used as the scale.</li>
-      <li>Optional: an M5StickS3 sensor attached to the sleeve (see <a href="#en-sensor">Sensor</a>).</li>
-    </ul>
-  </section>
-
-  <section id="en-filming"><h2>Filming</h2>
-    <ul>
-      <li>iPhone <strong>side-on, in line with the bar</strong>, 3 to 5 m away: the plate must look perfectly round. An oval plate means the camera is at an angle.</li>
-      <li>Lens at hip height, phone upright and level.</li>
-      <li>The whole movement in frame, from the floor to arms locked overhead.</li>
-      <li>60 frames per second, HD 1080p.</li>
-      <li>Start 2 s before lift-off, stop 2 s after the catch: the still bar is used as a reference.</li>
-      <li>Good light, no backlight, nothing in front of the plate.</li>
-    </ul>
-    <p class="tip">The filming guide is also in the app: <span class="ui">Analysis › Filming guide</span>.</p>
-  </section>
-
-  <section id="en-analysing"><h2>Analysing a lift</h2>
-    <ol>
-      <li><span class="ui">Analysis › A lift</span>: choose the lift, the load and the athlete.</li>
-      <li><span class="ui">Film</span> with the iPhone, or <span class="ui">import</span> a video from Photos or Files.</li>
-      <li><span class="ui">Trim</span>: keep a few seconds around the lift.</li>
-      <li><span class="ui">Plate detection</span>: tap the centre of the plate and adjust the circle if needed (pinch to zoom).</li>
-      <li><span class="ui">Analyze</span>: the result arrives in under a minute.</li>
-    </ol>
-  </section>
-
-  <section id="en-results"><h2>Reading the results</h2>
-    <ul>
-      <li><strong>Score out of 100</strong>: bar path quality, independent of the load. Green from 80, orange from 60 to 79, red below.</li>
-      <li><strong>Fix first</strong>: the measures outside their target, with what to change and by how much.</li>
-      <li><strong>Coloured bar path</strong>: blue = first pull, yellow = transition, pink = second pull, green = turnover, grey = catch.</li>
-      <li><strong>Replay</strong>: the video with the bar path drawing itself; slow motion and frame by frame. Tap the velocity curve to move through the lift.</li>
-      <li><strong>Athlete direction</strong>: detected automatically, can be changed at the bottom of the page.</li>
-    </ul>
-    <p>Targets are set in <span class="ui">Settings › Goals</span>.</p>
-  </section>
-
-  <section id="en-strength"><h2>Squat, bench press, deadlift <span class="pro">Pro</span></h2>
-    <ul>
-      <li>Film <strong>the whole set in a single video</strong>: every rep is detected and analysed.</li>
-      <li>For each rep: mean concentric velocity, peak velocity, range of motion, horizontal drift.</li>
-      <li><strong>Velocity loss</strong> compared with the fastest rep: a fatigue marker (velocity-based training).</li>
-    </ul>
-  </section>
-
-  <section id="en-sessions"><h2>Complexes and sessions <span class="pro">Pro</span></h2>
-    <ul>
-      <li><strong>Complex</strong>: several lifts in a row (e.g. 1 snatch + 1 clean). Stop the video after each lift; they are analysed one after another.</li>
-      <li><strong>Planned session</strong>: type the plan (e.g. "3x3 clean @ 80% + 2x1 clean & jerk @ 70%"). The app computes loads from the athlete's 1RMs and guides you set by set.</li>
-    </ul>
-  </section>
-
-  <section id="en-history"><h2>History</h2>
-    <ul>
-      <li>Lifts are grouped by day (or by the chosen sort), then into single lifts, sets and sessions. Everything can be expanded.</li>
-      <li><strong>Swipe right</strong> on a row: PDF <span class="pro">Pro</span>.</li>
-      <li><strong>Swipe left</strong>: delete, with confirmation. In the Sessions tab, this only removes the lift from the session.</li>
-      <li><span class="ui">Athletes</span>: height, body mass, category and dated 1RMs. Each lift's % of max uses the 1RM valid on its date.</li>
-    </ul>
-  </section>
-
-  <section id="en-sharing"><h2>Sharing</h2>
-    <div class="tbl"><table>
-      <thead><tr><th>Export</th><th>Content</th></tr></thead>
-      <tbody>
-        <tr><td>Instagram image</td><td>Catch photo, bar path and key measures</td></tr>
-        <tr><td>PDF <span class="pro">Pro</span></td><td>Lift, set, session or history: score, measures, charts, explanations</td></tr>
-        <tr><td>LiftMetrics file</td><td>The full lift: the person who receives it opens it in their app (sending <span class="pro">Pro</span>, receiving free)</td></tr>
-        <tr><td>CSV <span class="pro">Pro</span></td><td>Bar position and velocity, for a spreadsheet</td></tr>
-      </tbody>
-    </table></div>
-  </section>
-
-  <section id="en-sensor"><h2>M5Stick sensor (optional)</h2>
-    <ul>
-      <li>Attached to the sleeve, it measures velocity more accurately (200 samples per second) and bar tilt.</li>
-      <li><span class="ui">Analysis › Connected devices › Connect M5Stick</span>, then run the calibration once (<span class="ui">Settings › M5Stick calibration</span>).</li>
-      <li>It starts and stops with the camera; its file arrives in the analysis automatically.</li>
-    </ul>
-  </section>
-
-  <section id="en-pro"><h2>Free and Pro</h2>
-    <p>Snatch, clean and clean &amp; jerk analysis is free with no limit. <strong>LiftMetrics Pro</strong>, a one-time purchase with no subscription, adds strength lifts (squat, bench press, deadlift), elite comparison, complexes and planned sessions, multiple athletes, custom goals, charts against load, PDF reports, CSV and sending files.</p>
-    <p class="tip">During the launch period everything is free, Pro included. People who install the app during this period keep Pro for free.</p>
-  </section>
-
-  <section id="en-issues"><h2>Common issues</h2>
-    <h3>The plate is not tracked well</h3>
-    <p>In the results, <span class="ui">Fix plate tracking</span>: move the circle back onto the plate at the frame where it is lost, then restart tracking from there.</p>
-    <h3>Forward / backward measures are reversed</h3>
-    <p>Change <span class="ui">Athlete facing</span> at the bottom of the results. The choice is remembered.</p>
-    <h3>Distances look wrong</h3>
-    <p>Check the plate diameter in Settings, and that the plate looks round in the video.</p>
-    <h3>An imported video does not open</h3>
-    <p>If it is in iCloud, wait until it has downloaded to the iPhone. Videos at 60 frames per second give the best results.</p>
-  </section>
-
-  <section id="en-contact"><h2>Contact</h2>
-    <p>A question, a problem or an idea: <span class="mail">liftmetrics@icloud.com</span></p>
-    <p>Instagram: <a href="https://www.instagram.com/lift_metrics" target="_blank" rel="noopener">@lift_metrics</a> · <a href="privacy/">Privacy policy</a></p>
-  </section>
-</div>
-
-<footer>© 2026 Bertrand Cadet · LiftMetrics</footer>
-</div>
+</footer>
 
 <script>
-function setLang(l){
-  document.documentElement.lang=l;
-  document.getElementById('fr').hidden=(l!=='fr');
-  document.getElementById('en').hidden=(l!=='en');
-  document.getElementById('btn-fr').setAttribute('aria-pressed',l==='fr');
-  document.getElementById('btn-en').setAttribute('aria-pressed',l==='en');
-  try{localStorage.setItem('lang',l);}catch(e){}
-}
-var start='fr';
-try{ var h=location.hash; if(h.indexOf('#en')===0) start='en'; else if(h.indexOf('#fr')===0) start='fr';
-  else { var s=localStorage.getItem('lang'); if(s) start=s; else if(!(navigator.language||'fr').startsWith('fr')) start='en'; } }catch(e){}
-setLang(start);
+(function () {
+  var root = document.documentElement, saved = null;
+  try { saved = localStorage.getItem("lm_lang"); } catch (e) {}
+  var q = new URLSearchParams(location.search).get("lang");
+  var l = q === "fr" || q === "en" ? q : (saved || ((navigator.language || "en").toLowerCase().indexOf("fr") === 0 ? "fr" : "en"));
+  function set(v) {
+    root.dataset.l = v; root.lang = v;
+    document.querySelectorAll(".lang button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.l === v ? "true" : "false"); });
+    try { localStorage.setItem("lm_lang", v); } catch (e) {}
+  }
+  document.querySelectorAll(".lang button").forEach(function (b) { b.addEventListener("click", function () { set(b.dataset.l); }); });
+  set(l);
+})();
 </script>
-
 </body>
 </html>
