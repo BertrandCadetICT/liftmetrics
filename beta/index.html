@@ -42,6 +42,15 @@ button{font:inherit;font-weight:650;border:0;border-radius:12px;padding:11px 16p
 .guide summary{cursor:pointer;list-style:none}.guide summary::-webkit-details-marker{display:none}.guide summary h2:after{content:" ▾";color:var(--sub);font-size:14px}
 .guide ul{margin:8px 0 0;padding-left:20px}.guide li{margin:6px 0;color:#dcdef0;font-size:15px}.guide li b{color:#fff}.guide p{margin:8px 0 0;color:var(--sub);font-size:15px}
 #done{border-color:var(--acc)}
+.navtop{position:sticky;top:0;z-index:20;background:rgba(14,17,34,.96);backdrop-filter:blur(8px);margin:0 -16px 16px;padding:10px 16px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center}
+.navtop .cur{flex:1;font-weight:650;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.menu{position:absolute;top:100%;left:8px;right:8px;max-width:520px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px;box-shadow:0 12px 30px rgba(0,0,0,.45);max-height:70vh;overflow:auto}
+.menu a{display:flex;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:10px;color:var(--txt);text-decoration:none;font-size:15px}
+.menu a:hover,.menu a.on{background:var(--card2)}
+.menu a .cnt{color:var(--sub);font-size:13px;white-space:nowrap}
+.menu a .cnt.full{color:var(--ok)}
+.pager{display:flex;justify-content:space-between;gap:10px;margin:8px 0 16px}
+.pager button{flex:1}
 @media (max-width:600px){.grid{grid-template-columns:1fr}.how,.exp,.res,.rem{margin-left:0}h1{font-size:24px}}
 </style>
 </head>
@@ -50,7 +59,9 @@ button{font:inherit;font-weight:650;border:0;border-radius:12px;padding:11px 16p
 <div class="top"><span class="brand">LiftMetrics</span><span class="lang" role="group" aria-label="Langue / Language"><button data-l="fr">FR</button><button data-l="en">EN</button></span></div>
 <h1 data-i="title"></h1>
 <p class="lead" data-i="lead"></p>
+<div class="navtop"><button class="ghost" id="mbtn" aria-expanded="false">☰ <span data-i="menu"></span></button><span class="cur" id="cur"></span><div class="menu hidden" id="menu"></div></div>
 
+<div class="page" data-page="0">
 <details class="card guide" open>
 <summary><h2 data-i="gT" style="display:inline"></h2></summary>
 <div data-i="gB"></div>
@@ -68,8 +79,11 @@ button{font:inherit;font-weight:650;border:0;border-radius:12px;padding:11px 16p
 </div>
 </div>
 
+</div>
+
 <div id="tests"></div>
 
+<div class="page" data-page="end">
 <div class="card">
 <h2 data-i="general"></h2>
 <textarea id="i_general" data-k="general" rows="4"></textarea>
@@ -81,6 +95,8 @@ button{font:inherit;font-weight:650;border:0;border-radius:12px;padding:11px 16p
 <button class="ghost" id="copy" data-i="copy"></button> <button class="ghost" id="dl" data-i="dl"></button>
 <p class="note" id="copied"></p>
 </div>
+</div>
+<div class="pager" id="pager"><button class="ghost" id="prev"></button><button class="primary" id="next"></button></div>
 </div>
 
 <div class="bar"><div class="in">
@@ -98,7 +114,12 @@ const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catc
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const qp = new URLSearchParams(location.search).get("lang");
 let lang = qp === "en" || qp === "fr" ? qp : (st.lang || ((navigator.language || "fr").toLowerCase().startsWith("fr") ? "fr" : "en"));
+Object.assign(UI.fr, {menu: "Sections", home: "Avant de commencer", finish: "Remarques et envoi", prev: "← Précédent", next: "Suivant →"});
+Object.assign(UI.en, {menu: "Sections", home: "Before you start", finish: "Comments and sending", prev: "← Previous", next: "Next →"});
 const T = k => UI[lang][k];
+// section du capteur M5Stick (masquée si le testeur n'en a pas)
+const STICK = DATA.fr.findIndex(s => s.title.includes("M5Stick"));
+let page = "0";
 // valeurs enregistrées en français (Oui / Non, OK / Problème / Pas testé), affichées dans la langue choisie
 const RES = [["OK","ok"],["Problème","ko"],["Pas testé","na"]];
 
@@ -109,10 +130,12 @@ function render() {
   document.getElementById("i_general").placeholder = T("generalPh");
   document.querySelectorAll(".lang button").forEach(b => b.classList.toggle("on", b.dataset.l === lang));
   const box = document.getElementById("tests");
+  const pg = document.getElementById("pager");
+  if (pg) document.querySelector(".wrap").appendChild(pg);
   box.innerHTML = "";
   DATA[lang].forEach((s, si) => {
     const c = document.createElement("div");
-    c.className = "card"; c.dataset.sec = si + 1;
+    c.className = "card page"; c.dataset.sec = si + 1; c.dataset.page = String(si + 1);
     let h = `<h2>${esc(s.title)}</h2>` + (s.intro ? `<p class="intro">${esc(s.intro)}</p>` : "");
     s.rows.forEach((r, ri) => {
       const id = `${si + 1}.${ri + 1}`;
@@ -129,7 +152,69 @@ function render() {
   });
   bind();
   update();
+  show(page);
 }
+
+// pages : "0" (avant de commencer), "1"…"n" (sections), "end" (remarques et envoi)
+function pages() {
+  const p = ["0"];
+  DATA.fr.forEach((s, si) => { if (!(noStick() && si === STICK)) p.push(String(si + 1)); });
+  p.push("end");
+  return p;
+}
+function pageTitle(p) { return p === "0" ? T("home") : p === "end" ? T("finish") : DATA[lang][+p - 1].title; }
+function secCount(si) {
+  let a = 0; DATA.fr[si].rows.forEach((r, ri) => { if (st[`r${si + 1}.${ri + 1}`]) a++; });
+  return [a, DATA.fr[si].rows.length];
+}
+function buildMenu() {
+  const m = document.getElementById("menu");
+  m.innerHTML = pages().map(p => {
+    let cnt = "";
+    if (p !== "0" && p !== "end") { const [a, n] = secCount(+p - 1); cnt = `<span class="cnt${a === n ? " full" : ""}">${a === n ? "✓ " : ""}${a}/${n}</span>`; }
+    return `<a href="#${p === "0" ? "start" : p === "end" ? "send" : "s" + p}" data-p="${p}" class="${p === page ? "on" : ""}"><span>${esc(pageTitle(p))}</span>${cnt}</a>`;
+  }).join("");
+}
+function show(p) {
+  if (!pages().includes(p)) p = "0";
+  page = p;
+  document.querySelectorAll(".page").forEach(el => el.classList.toggle("hidden", el.dataset.page !== p));
+  document.getElementById("cur").textContent = pageTitle(p);
+  const ps = pages(), i = ps.indexOf(p);
+  const prev = document.getElementById("prev"), next = document.getElementById("next");
+  prev.textContent = T("prev"); next.textContent = T("next");
+  prev.style.visibility = i > 0 ? "visible" : "hidden";
+  next.style.visibility = i < ps.length - 1 ? "visible" : "hidden";
+  // boutons sous la page affichée
+  const host = document.querySelector(`.page[data-page="${p}"]`);
+  if (host) host.appendChild(document.getElementById("pager"));
+  buildMenu();
+}
+function go(p) {
+  const h = p === "0" ? "#start" : p === "end" ? "#send" : "#s" + p;
+  if (location.hash !== h) location.hash = h; else show(p);
+  window.scrollTo({top: 0});
+}
+function fromHash() {
+  const h = location.hash.slice(1);
+  if (h === "send") return "end";
+  if (h.startsWith("s") && /^s\d+$/.test(h)) return h.slice(1);
+  return "0";
+}
+window.addEventListener("hashchange", () => { show(fromHash()); window.scrollTo({top: 0}); });
+document.getElementById("prev").addEventListener("click", () => { const ps = pages(); go(ps[Math.max(0, ps.indexOf(page) - 1)]); });
+document.getElementById("next").addEventListener("click", () => { const ps = pages(); go(ps[Math.min(ps.length - 1, ps.indexOf(page) + 1)]); });
+document.getElementById("mbtn").addEventListener("click", e => {
+  const m = document.getElementById("menu"), open = m.classList.toggle("hidden") === false;
+  e.currentTarget.setAttribute("aria-expanded", open);
+});
+document.getElementById("menu").addEventListener("click", () => {
+  document.getElementById("menu").classList.add("hidden");
+  document.getElementById("mbtn").setAttribute("aria-expanded", "false");
+});
+document.addEventListener("click", e => {
+  if (!e.target.closest(".navtop")) { document.getElementById("menu").classList.add("hidden"); document.getElementById("mbtn").setAttribute("aria-expanded", "false"); }
+});
 
 function bind() {
   document.querySelectorAll("[data-k]").forEach(el => {
@@ -145,15 +230,14 @@ function bind() {
 }
 
 const noStick = () => (st.stick || "") === "Non";
-function total() { return DATA.fr.reduce((n, s, si) => n + (noStick() && si === 9 ? 0 : s.rows.length), 0); }
+function total() { return DATA.fr.reduce((n, s, si) => n + (noStick() && si === STICK ? 0 : s.rows.length), 0); }
 function answered() {
   let n = 0;
-  DATA.fr.forEach((s, si) => { if (noStick() && si === 9) return; s.rows.forEach((r, ri) => { if (st[`r${si + 1}.${ri + 1}`]) n++; }); });
+  DATA.fr.forEach((s, si) => { if (noStick() && si === STICK) return; s.rows.forEach((r, ri) => { if (st[`r${si + 1}.${ri + 1}`]) n++; }); });
   return n;
 }
 function update() {
-  const sec = document.querySelector('.card[data-sec="10"]');
-  if (sec) sec.classList.toggle("hidden", noStick());
+  if (document.getElementById("menu")) buildMenu();
   const t = total(), a = answered();
   document.getElementById("ptxt").textContent = T("prog").replace("{a}", a).replace("{t}", t).replace("{s}", a > 1 ? "s" : "");
   document.getElementById("pbar").style.width = (t ? a / t * 100 : 0) + "%";
@@ -169,7 +253,7 @@ function report() {
   L.push(T("rDone").replace("{a}", answered()).replace("{t}", total()));
   L.push("");
   DATA[lang].forEach((s, si) => {
-    if (noStick() && si === 9) return;
+    if (noStick() && si === STICK) return;
     const lines = [];
     s.rows.forEach((r, ri) => {
       const id = `${si + 1}.${ri + 1}`, v = st["r" + id], m = (st["m" + id] || "").trim();
@@ -187,6 +271,7 @@ document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click
 }));
 document.getElementById("send").addEventListener("click", () => {
   const subj = `${T("subj")} — ${st.name || T("tester")} — ${st.model || "iPhone"}`;
+  go("end");
   document.getElementById("done").classList.remove("hidden");
   window.location.href = "mailto:liftmetrics@icloud.com?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent(report());
   setTimeout(() => document.getElementById("done").scrollIntoView({behavior: "smooth"}), 400);
@@ -202,6 +287,7 @@ document.getElementById("dl").addEventListener("click", () => {
   a.download = "LiftMetrics_tests_" + (st.name || T("tester")).replace(/\s+/g, "_") + ".txt";
   a.click();
 });
+page = fromHash();
 render();
 </script>
 </body>
