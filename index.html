@@ -36,6 +36,7 @@ p{margin:0 0 14px}
 
 /* barre du haut */
 .top{display:flex;align-items:center;justify-content:space-between;padding:20px 0}
+.nav{flex-wrap:nowrap}
 .logo{display:flex;align-items:center;gap:12px;text-decoration:none;font-family:"Barlow Condensed",Barlow,sans-serif;font-weight:700;font-size:26px}
 .logo img{width:40px;height:40px;border-radius:10px}
 .nav{display:flex;gap:22px;align-items:center;font-weight:500;font-size:16px}
@@ -101,7 +102,7 @@ p{margin:0 0 14px}
 .qr b{color:var(--chalk)}
 
 /* pied */
-.links{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:36px}
+.links{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:36px}
 .links a{display:block;text-decoration:none;border-top:2px solid var(--line);padding-top:14px}
 .links a:hover{border-color:var(--violet)}
 .links a b{display:block;font-family:"Barlow Condensed",Barlow,sans-serif;font-size:26px}
@@ -112,7 +113,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
   .hero,.feat,.plans{grid-template-columns:1fr}
   .feat.flip .shot{order:0}
   .steps,.links{grid-template-columns:1fr}
-  .nav a{display:none}
+  .top{flex-wrap:wrap;gap:12px}
+  .nav{gap:14px;font-size:15px;overflow-x:auto;width:100%;padding-bottom:4px}
+  .nav a{white-space:nowrap}
+  .top{position:relative}
+  .lang{position:absolute;top:21px;right:0}
   .hero{padding-top:10px}
   .feat{gap:32px;padding:56px 0}
   .stage{width:min(280px,80%)}
@@ -129,6 +134,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
       <a href="#pricing"><span lang="fr">Gratuit et Pro</span><span lang="en">Free and Pro</span></a>
       <a href="samples/"><span lang="fr">Exemples</span><span lang="en">Samples</span></a>
       <a href="guide/">Guide</a>
+      <a href="beta/"><span lang="fr">Testeurs</span><span lang="en">Testers</span></a>
+      <a href="ambassador/"><span lang="fr">Ambassadeurs</span><span lang="en">Ambassadors</span></a>
       <span class="lang" role="group" aria-label="Langue / Language"><button data-l="fr" aria-pressed="true">FR</button><button data-l="en" aria-pressed="false">EN</button></span>
     </nav>
   </header>
@@ -310,6 +317,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
     <div class="links">
       <a href="samples/"><b><span lang="fr">Exemples réels</span><span lang="en">Real samples</span></b><span class="muted"><span lang="fr">PDF, image et vidéo tirés de vraies séances.</span><span lang="en">PDFs, picture and video from real sessions.</span></span></a>
       <a href="guide/"><b><span lang="fr">Guide d'utilisation</span><span lang="en">User guide</span></b><span class="muted"><span lang="fr">Filmer, analyser, lire les résultats.</span><span lang="en">Filming, analysing, reading the results.</span></span></a>
+      <a href="ambassador/"><b><span lang="fr">Devenir ambassadeur</span><span lang="en">Become an ambassador</span></b><span class="muted"><span lang="fr">Pro à vie, accès anticipé, ligne directe avec le développeur.</span><span lang="en">Pro for life, early access, a direct line to the developer.</span></span></a>
       <a href="presentation/LiftMetrics_presentation_EN.pdf"><b><span lang="fr">Présentation complète</span><span lang="en">Full presentation</span></b><span class="muted"><span lang="fr">38 pages, en anglais.</span><span lang="en">38 pages.</span></span></a>
     </div>
   </section>

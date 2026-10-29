@@ -1,0 +1,43 @@
+/* Pages secondaires du site LiftMetrics (guide, ambassadeurs) : mêmes repères que la page d'accueil. */
+:root{
+  --night:#10132a; --deep:#0b0e20; --panel:#1b2045; --line:#2e3566;
+  --chalk:#f2f1fa; --mist:#a9acc8;
+  --violet:#8b7cf6; --pull1:#4f8ef7; --trans:#f5c04a; --pull2:#ec4899; --under:#34c27a; --catch:#9aa0c3;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--night);color:var(--chalk);font:17px/1.6 Barlow,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+html[data-l="fr"] [lang="en"], html[data-l="en"] [lang="fr"]{display:none !important}
+a{color:inherit}
+img{max-width:100%;display:block}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:"Barlow Condensed",Barlow,sans-serif;font-weight:700;line-height:1.05;margin:0}
+h1{font-size:clamp(42px,6vw,72px);letter-spacing:-.4px}
+h2{font-size:clamp(30px,3.6vw,42px);margin:0 0 14px}
+h3{font-size:24px;margin:22px 0 6px}
+p{margin:0 0 14px}
+.muted{color:var(--mist)}
+:focus-visible{outline:3px solid var(--trans);outline-offset:3px;border-radius:6px}
+
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 0;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;font-family:"Barlow Condensed",Barlow,sans-serif;font-weight:700;font-size:26px}
+.logo img{width:40px;height:40px;border-radius:10px}
+.nav{display:flex;gap:20px;align-items:center;font-weight:500;font-size:16px;flex-wrap:wrap}
+.nav a{text-decoration:none;color:var(--mist)} .nav a:hover,.nav a[aria-current="page"]{color:var(--chalk)}
+.nav a[aria-current="page"]{text-decoration:underline;text-decoration-color:var(--violet);text-decoration-thickness:2px;text-underline-offset:6px}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;padding:3px}
+.lang button{font:inherit;font-size:14px;font-weight:600;background:none;border:0;color:var(--mist);padding:4px 11px;border-radius:999px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--violet);color:#fff}
+
+.btn{display:inline-flex;align-items:center;gap:10px;font:inherit;font-weight:600;font-size:17px;text-decoration:none;border-radius:14px;padding:13px 22px;border:1px solid var(--line);background:none;color:var(--chalk);cursor:pointer}
+.btn.main{background:var(--chalk);color:var(--night);border-color:var(--chalk)}
+
+footer{padding:44px 0 60px;color:var(--mist);font-size:15px;border-top:1px solid var(--line);margin-top:60px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+@media (max-width:860px){
+  .nav{gap:14px;font-size:15px;overflow-x:auto;flex-wrap:nowrap;width:100%;padding-bottom:4px}
+  .nav a{white-space:nowrap}
+  .top{position:relative}
+  .lang{position:absolute;top:21px;right:0}
+}

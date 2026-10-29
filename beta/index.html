@@ -42,6 +42,14 @@ button{font:inherit;font-weight:650;border:0;border-radius:12px;padding:11px 16p
 .guide summary{cursor:pointer;list-style:none}.guide summary::-webkit-details-marker{display:none}.guide summary h2:after{content:" ▾";color:var(--sub);font-size:14px}
 .guide ul{margin:8px 0 0;padding-left:20px}.guide li{margin:6px 0;color:#dcdef0;font-size:15px}.guide li b{color:#fff}.guide p{margin:8px 0 0;color:var(--sub);font-size:15px}
 #done{border-color:var(--acc)}
+body.locked .wrap > :not(.top):not(#gate), body.locked .bar{display:none !important}
+#gate{max-width:440px;margin:40px auto}
+#gate h2{font-size:24px;margin-bottom:8px}
+#gate label{display:block;font-size:13px;color:var(--sub);margin:14px 0 4px}
+#gate .err{color:var(--ko);font-size:14px;min-height:20px;margin-top:10px}
+#gate button{width:100%;margin-top:16px}
+.home{color:var(--sub);text-decoration:none;font-size:14px;margin-right:auto;margin-left:14px}
+.out{background:none;border:0;color:var(--sub);font-size:13px;text-decoration:underline;padding:0;margin-left:10px;cursor:pointer}
 .navtop{position:sticky;top:0;z-index:20;background:rgba(14,17,34,.96);backdrop-filter:blur(8px);margin:0 -16px 16px;padding:10px 16px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center}
 .navtop .cur{flex:1;font-weight:650;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .menu{position:absolute;top:100%;left:8px;right:8px;max-width:520px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px;box-shadow:0 12px 30px rgba(0,0,0,.45);max-height:70vh;overflow:auto}
@@ -54,9 +62,17 @@ button{font:inherit;font-weight:650;border:0;border-radius:12px;padding:11px 16p
 @media (max-width:600px){.grid{grid-template-columns:1fr}.how,.exp,.res,.rem{margin-left:0}h1{font-size:24px}}
 </style>
 </head>
-<body>
+<body class="locked">
 <div class="wrap">
-<div class="top"><span class="brand">LiftMetrics</span><span class="lang" role="group" aria-label="Langue / Language"><button data-l="fr">FR</button><button data-l="en">EN</button></span></div>
+<div class="top"><span class="brand">LiftMetrics</span><a class="home" href="../" data-i="site"></a><button class="out hidden" id="logout" data-i="logout"></button><span class="lang" role="group" aria-label="Langue / Language"><button data-l="fr">FR</button><button data-l="en">EN</button></span></div>
+<form class="card" id="gate" autocomplete="on">
+<h2 data-i="gateT"></h2>
+<p class="intro" style="font-style:normal" data-i="gateP"></p>
+<label for="g_mail" data-i="mail"></label><input type="email" id="g_mail" autocomplete="email" required>
+<label for="g_pw" data-i="pw"></label><input type="password" id="g_pw" autocomplete="current-password" required style="width:100%;background:var(--card2);color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;font-size:15px">
+<button class="primary" type="submit" data-i="login"></button>
+<p class="err" id="g_err" role="alert"></p>
+</form>
 <h1 data-i="title"></h1>
 <p class="lead" data-i="lead"></p>
 <div class="navtop"><button class="ghost" id="mbtn" aria-expanded="false">☰ <span data-i="menu"></span></button><span class="cur" id="cur"></span><div class="menu hidden" id="menu"></div></div>
@@ -114,6 +130,8 @@ const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catc
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const qp = new URLSearchParams(location.search).get("lang");
 let lang = qp === "en" || qp === "fr" ? qp : (st.lang || ((navigator.language || "fr").toLowerCase().startsWith("fr") ? "fr" : "en"));
+Object.assign(UI.fr, {site: "← Site LiftMetrics", gateT: "Espace testeurs", gateP: "Connecte-toi avec ton e-mail et le mot de passe reçu avec ton invitation TestFlight.", pw: "Mot de passe", login: "Se connecter", logout: "Se déconnecter", badPw: "Mot de passe incorrect. Vérifie celui reçu avec ton invitation.", badMail: "Indique ton adresse e-mail."});
+Object.assign(UI.en, {site: "← LiftMetrics website", gateT: "Testers' area", gateP: "Sign in with your e-mail and the password you received with your TestFlight invitation.", pw: "Password", login: "Sign in", logout: "Sign out", badPw: "Wrong password. Check the one sent with your invitation.", badMail: "Enter your e-mail address."});
 Object.assign(UI.fr, {menu: "Sections", home: "Avant de commencer", finish: "Remarques et envoi", prev: "← Précédent", next: "Suivant →"});
 Object.assign(UI.en, {menu: "Sections", home: "Before you start", finish: "Comments and sending", prev: "← Previous", next: "Next →"});
 const T = k => UI[lang][k];
@@ -286,6 +304,38 @@ document.getElementById("dl").addEventListener("click", () => {
   a.href = URL.createObjectURL(new Blob([report()], {type: "text/plain;charset=utf-8"}));
   a.download = "LiftMetrics_tests_" + (st.name || T("tester")).replace(/\s+/g, "_") + ".txt";
   a.click();
+});
+// Espace testeurs : e-mail + mot de passe commun (empreinte SHA-256, rien n'est envoyé).
+const GATE = "082a30656c05c97bdaacb9dfea7469907ba877fa5b64e1c395737e3221c1efeb";
+const AUTH = "lm_tester";
+async function sha(t) {
+  const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t));
+  return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, "0")).join("");
+}
+function unlock(mail) {
+  document.body.classList.remove("locked");
+  document.getElementById("gate").classList.add("hidden");
+  document.getElementById("logout").classList.remove("hidden");
+  if (mail && !st.mail) { st.mail = mail; save(); const f = document.getElementById("i_mail"); if (f) f.value = mail; }
+}
+let auth = null;
+try { auth = JSON.parse(localStorage.getItem(AUTH) || "null"); } catch (e) {}
+if (auth && auth.h === GATE) unlock(auth.mail);
+document.getElementById("gate").addEventListener("submit", async e => {
+  e.preventDefault();
+  const mail = document.getElementById("g_mail").value.trim(), pw = document.getElementById("g_pw").value;
+  const err = document.getElementById("g_err");
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) { err.textContent = T("badMail"); return; }
+  const h = await sha("liftmetrics-testers:" + pw);
+  if (h !== GATE) { err.textContent = T("badPw"); return; }
+  err.textContent = "";
+  try { localStorage.setItem(AUTH, JSON.stringify({mail, h})); } catch (e) {}
+  unlock(mail);
+});
+["g_mail", "g_pw"].forEach(id => document.getElementById(id).addEventListener("input", () => { document.getElementById("g_err").textContent = ""; }));
+document.getElementById("logout").addEventListener("click", () => {
+  try { localStorage.removeItem(AUTH); } catch (e) {}
+  location.reload();
 });
 page = fromHash();
 render();
