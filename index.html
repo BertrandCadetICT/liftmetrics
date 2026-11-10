@@ -93,6 +93,14 @@ p{margin:0 0 14px}
 .launch{margin-top:26px;color:var(--mist)}
 
 /* sortie : e-mail et QR code Instagram */
+.betabadge{display:inline-flex;align-items:center;gap:10px;background:rgba(52,194,122,.14);color:#7ee2a8;border:1px solid rgba(52,194,122,.4);border-radius:999px;padding:7px 16px;font-weight:600;font-size:15px;margin-bottom:22px;text-decoration:none}
+.betabadge i{width:9px;height:9px;border-radius:50%;background:#34c27a;box-shadow:0 0 0 4px rgba(52,194,122,.25)}
+.beta{padding:84px 0 24px;border-bottom:1px solid var(--line)}
+.beta h2{margin-bottom:16px} .beta p{max-width:42em}
+.beta ul{list-style:none;padding:0;margin:22px 0;display:grid;grid-template-columns:1fr 1fr;gap:10px 28px;max-width:46em}
+.beta li{padding-left:28px;position:relative} .beta li:before{content:"✓";position:absolute;left:0;color:#34c27a;font-weight:700}
+.beta .cta{display:flex;gap:12px;flex-wrap:wrap;margin:8px 0 14px}
+@media (max-width:700px){.beta ul{grid-template-columns:1fr}}
 .notify{display:grid;grid-template-columns:1fr auto;gap:56px;align-items:center;padding:84px 0 24px;border-bottom:1px solid var(--line)}
 .notify h2{margin-bottom:16px} .notify p{max-width:40em}
 .notify .cta{margin:22px 0 14px}
@@ -151,10 +159,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 
   <section class="hero">
     <div>
+      <a class="betabadge" href="#beta"><i></i><span lang="fr">Bêta ouverte sur iPhone : deviens testeur</span><span lang="en">iPhone beta open: become a tester</span></a>
       <h1><span lang="fr">Ta barre laisse une trace. LiftMetrics la lit.</span><span lang="en">Every lift leaves a trace. LiftMetrics reads it.</span></h1>
       <p class="sub"><span lang="fr">Filme ton arraché, ton épaulé ou ton squat de profil avec ton iPhone. En moins d'une minute : la trajectoire de la barre, sa vitesse, une note sur 100 et ce qu'il faut corriger en priorité.</span><span lang="en">Film your snatch, clean or squat from the side with your iPhone. In under a minute: the bar path, its velocity, a score out of 100 and what to fix first.</span></p>
       <div class="cta">
-        <a class="btn main" href="#notify"><span lang="fr">Être prévenu de la sortie</span><span lang="en">Get notified at launch</span></a>
+        <a class="btn main" href="#beta"><span lang="fr">Devenir testeur</span><span lang="en">Become a tester</span></a>
+        <a class="btn" href="#notify"><span lang="fr">Être prévenu de la sortie</span><span lang="en">Get notified at launch</span></a>
         <a class="btn" href="https://www.instagram.com/lift_metrics"><span lang="fr">Suivre sur Instagram</span><span lang="en">Follow on Instagram</span></a>
         <a class="btn" href="samples/"><span lang="fr">Voir des analyses réelles</span><span lang="en">See real analyses</span></a>
       </div>
@@ -305,6 +315,22 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 </section>
 
 <div class="wrap">
+  <section class="beta" id="beta">
+    <h2><span lang="fr">La bêta est ouverte</span><span lang="en">The beta is open</span></h2>
+    <p class="muted"><span lang="fr">LiftMetrics cherche ses premiers testeurs sur iPhone. Tu filmes tes barres pendant tes séances, tu me dis ce qui marche et ce qui coince : c'est ce qui fera progresser l'app.</span><span lang="en">LiftMetrics is looking for its first iPhone testers. Film your lifts during your sessions and tell me what works and what doesn't: that's what will make the app better.</span></p>
+    <ul>
+      <li><span lang="fr">Gratuit, pendant 4 semaines</span><span lang="en">Free, for 4 weeks</span></li>
+      <li><span lang="fr">Un iPhone sous iOS 17 ou plus, rien d'autre</span><span lang="en">An iPhone with iOS 17 or later, nothing else</span></li>
+      <li><span lang="fr">Installation par TestFlight, l'app de test d'Apple</span><span lang="en">Installed through TestFlight, Apple's testing app</span></li>
+      <li><span lang="fr">LiftMetrics Pro offert à la sortie</span><span lang="en">LiftMetrics Pro free at launch</span></li>
+    </ul>
+    <div class="cta">
+      <a class="btn main" href="https://ig.me/m/lift_metrics"><span lang="fr">Écris « BETA » sur Instagram</span><span lang="en">DM “BETA” on Instagram</span></a>
+      <a class="btn" href="mailto:liftmetrics@icloud.com?subject=BETA%20LiftMetrics"><span lang="fr">Ou par e-mail</span><span lang="en">Or by e-mail</span></a>
+    </div>
+    <p class="muted small"><span lang="fr">Places limitées. Je t'envoie ton accès personnellement, avec la fiche de tests.</span><span lang="en">Limited spots. I'll send you your access personally, with the test checklist.</span></p>
+  </section>
+
   <section class="notify" id="notify">
     <div>
       <h2><span lang="fr">Bientôt sur l'App Store</span><span lang="en">Coming soon to the App Store</span></h2>
