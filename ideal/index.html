@@ -7,6 +7,7 @@
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.4 -apple-system,Inter,sans-serif}
 .wrap{max-width:520px;margin:0 auto;padding:16px}
 .tabs{display:flex;gap:6px;margin-bottom:12px}.tabs button{flex:1;padding:10px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--sub);font:600 15px inherit}
+.tabs.sub button{padding:7px;font-size:14px}.tabs[hidden]{display:none}
 .tabs button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
 canvas{width:100%;background:#151938;border-radius:18px;display:block}
 .cap{min-height:74px;margin:12px 2px 6px}.cap b{display:block;font-size:18px}.cap span{color:var(--sub);font-size:15px}
@@ -21,7 +22,8 @@ footer{color:var(--sub);font-size:13px;margin-top:26px}footer a{color:var(--sub)
 </style></head><body><div class="wrap">
 <div class="top"><a href="../"><img src="../img/icon.png" alt="">LiftMetrics</a><span class="lang"><button data-l="fr">FR</button><button data-l="en">EN</button></span></div>
 <h1 data-t="h1">Mouvement idéal</h1><p class="lead" data-t="lead">Arraché et épaulé-jeté de profil, position par position, avec la trajectoire de la barre colorée par phase.</p>
-<div class="tabs"><button data-m="snatch" class="on" data-t="snatch">Arraché</button><button data-m="cj" data-t="cj">Épaulé-jeté</button></div>
+<div class="tabs"><button data-m="snatch" class="on" data-t="snatch">Arraché</button><button data-m="cj" data-t="cj">Épaulé-jeté</button><button data-m="clean" data-t="clean">Épaulé</button><button data-m="split" data-g="jerk" data-t="jerk">Jeté</button></div>
+<div class="tabs sub" id="jtabs" hidden><button data-m="split" class="on" data-t="split">En fente</button><button data-m="push" data-t="push">Poussé</button><button data-m="squatj" data-t="squatj">En squat</button></div>
 <canvas id="c" width="1040" height="1180"></canvas>
 <div class="cap" id="cap"></div>
 <div class="ctl"><button id="play">⏸ Pause</button><button id="prev">◀︎</button><button id="next">▶︎</button>
@@ -99,7 +101,35 @@ const CJ={name:"Épaulé-jeté",grip:0,steps:[
     fr:["Retour : pied arrière","Puis le pied arrière vient rejoindre le pied avant."],en:["Recovery: back foot","Then the back foot steps up to meet the front foot."]}),
  K({t:4.6, bar:[.00,2.04],sh:[-.01,1.45],hip:[-.01,.93],ank:[[.00,.08],[.00,.08]],el:0,oh:1,ph:"rec",hold:1.6,
     fr:["Verrouillage","Pieds alignés, barre au-dessus de la tête, tiens jusqu'au signal."],en:["Lockout","Feet in line, bar overhead, hold until the down signal."]})]};
-const M={snatch:SNATCH,cj:CJ};
+// ---------- épaulé seul, jeté seul (fente, poussé, squat) : construits à partir de l'épaulé-jeté
+const cp=o=>JSON.parse(JSON.stringify(o));
+const CLEAN={name:"Épaulé",grip:0,steps:cp(CJ.steps.slice(0,9))};
+CLEAN.steps[8].fr=["Debout","Remonte du squat avant, pieds à largeur de hanches, barre sur les épaules, coudes hauts."];
+CLEAN.steps[8].en=["Standing","Stand up from the front squat, feet hip-width, bar on the shoulders, elbows high."];
+CLEAN.steps[8].hold=1.6;
+function jerkFrom(catchSteps){
+  const base=cp(CJ.steps.slice(8,11)), t0=base[0].t;
+  base.forEach(s=>s.t=+(s.t-t0).toFixed(3));
+  base[0].fr=["Départ","Debout, pieds à largeur de hanches, barre sur les épaules, coudes un peu devant, respire et gaine-toi."];
+  base[0].en=["Start","Standing, feet hip-width, bar on the shoulders, elbows slightly forward, breathe and brace."];
+  return base.concat(catchSteps);
+}
+const SPLIT={name:"Jeté en fente",grip:0,steps:(()=>{const st=jerkFrom([]);const rest=cp(CJ.steps.slice(11));rest.forEach(s=>s.t=+(s.t-2.3).toFixed(3));return st.concat(rest);})()};
+const PUSH={name:"Jeté poussé",grip:0,steps:jerkFrom([
+ K({t:.86,bar:[.00,1.98],sh:[-.01,1.39],hip:[-.02,.87],ank:[[-.05,.08],[-.05,.08]],el:0,oh:1,ph:"sub",hold:1.4,
+    fr:["Réception poussée","Repasse sous la barre sans bouger les pieds : jambes fléchies (genoux ~130°), pieds à plat, bras verrouillés, buste vertical."],
+    en:["Push jerk catch","Drop under the bar without moving the feet: knees bent (~130°), feet flat, arms locked, torso vertical."]}),
+ K({t:1.6,bar:[.00,2.04],sh:[-.01,1.45],hip:[-.01,.93],ank:[[-.05,.08],[-.05,.08]],el:0,oh:1,ph:"rec",hold:1.6,
+    fr:["Verrouillage","Tends les jambes, barre au-dessus de la tête, tiens jusqu'au signal."],
+    en:["Lockout","Straighten the legs, bar overhead, hold until the down signal."]})])};
+const SQUATJ={name:"Jeté en squat",grip:0,steps:jerkFrom([
+ K({t:.98,bar:[.00,1.47],sh:[-.03,.89],hip:[-.25,.44],ank:[[-.05,.08],[-.05,.08]],el:0,oh:1,ph:"sub",hold:1.4,
+    fr:["Réception en squat","Passe directement en squat complet sous la barre, bras verrouillés, barre au-dessus du milieu du pied, buste gainé."],
+    en:["Squat catch","Drop straight into a full squat under the bar, arms locked, bar over mid-foot, braced torso."]}),
+ K({t:2.1,bar:[.00,2.04],sh:[-.01,1.45],hip:[-.01,.93],ank:[[-.05,.08],[-.05,.08]],el:0,oh:1,ph:"rec",hold:1.6,
+    fr:["Remontée","Remonte debout en gardant la barre au-dessus du milieu du pied, tiens jusqu'au signal."],
+    en:["Stand up","Stand up keeping the bar over mid-foot, hold until the down signal."]})])};
+const M={snatch:SNATCH,cj:CJ,clean:CLEAN,split:SPLIT,push:PUSH,squatj:SQUATJ};
 // ---------- géométrie
 const lerp=(a,b,u)=>a+(b-a)*u, lp=(p,q,u)=>[lerp(p[0],q[0],u),lerp(p[1],q[1],u)];
 const ease=u=>u<.5?2*u*u:1-2*(1-u)*(1-u);
@@ -163,8 +193,8 @@ function draw(){
 // ---------- lecture
 let playing=true,spd=.5,last=null,hold=0,step=0;
 const cap=document.getElementById('cap'),dots=document.getElementById('dots');
-const UI={fr:{h1:"Mouvement idéal",lead:"Arraché et épaulé-jeté de profil, position par position, avec la trajectoire de la barre colorée par phase.",snatch:"Arraché",cj:"Épaulé-jeté",s1:"Vitesse réelle",s2:"Ralenti ×0,5",s3:"Ralenti ×0,25",stop:"pause aux positions",pause:"⏸ Pause",play:"▶︎ Lecture",foot:"Dans l'app, ouvre l'animation depuis les conseils de chaque mesure : elle démarre sur la bonne position."},
- en:{h1:"Ideal lift",lead:"Snatch and clean & jerk from the side, position by position, with the bar path coloured by phase.",snatch:"Snatch",cj:"Clean & jerk",s1:"Real speed",s2:"Slow motion ×0.5",s3:"Slow motion ×0.25",stop:"pause at positions",pause:"⏸ Pause",play:"▶︎ Play",foot:"In the app, open the animation from the tips of each measurement: it starts at the right position."}};
+const UI={fr:{h1:"Mouvement idéal",lead:"Arraché, épaulé-jeté, épaulé et jeté de profil, position par position, avec la trajectoire de la barre colorée par phase.",snatch:"Arraché",cj:"Épaulé-jeté",clean:"Épaulé",jerk:"Jeté",split:"En fente",push:"Poussé",squatj:"En squat",s1:"Vitesse réelle",s2:"Ralenti ×0,5",s3:"Ralenti ×0,25",stop:"pause aux positions",pause:"⏸ Pause",play:"▶︎ Lecture",foot:"Dans l'app, ouvre l'animation depuis les conseils de chaque mesure : elle démarre sur la bonne position."},
+ en:{h1:"Ideal lift",lead:"Snatch, clean & jerk, clean and jerk from the side, position by position, with the bar path coloured by phase.",snatch:"Snatch",cj:"Clean & jerk",clean:"Clean",jerk:"Jerk",split:"Split",push:"Push",squatj:"Squat",s1:"Real speed",s2:"Slow motion ×0.5",s3:"Slow motion ×0.25",stop:"pause at positions",pause:"⏸ Pause",play:"▶︎ Play",foot:"In the app, open the animation from the tips of each measurement: it starts at the right position."}};
 let LANG=(()=>{const q=new URLSearchParams(location.search).get('lang');let sv=null;try{sv=localStorage.getItem('lm_lang')}catch(e){}return q==='fr'||q==='en'?q:(sv||((navigator.language||'en').toLowerCase().startsWith('fr')?'fr':'en'));})();
 function txt(s){return s[LANG]||s.fr}
 function applyLang(){document.documentElement.lang=LANG;document.documentElement.dataset.l=LANG;document.querySelectorAll('[data-t]').forEach(e=>e.textContent=UI[LANG][e.dataset.t]);document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l===LANG));document.getElementById('play').textContent=playing?UI[LANG].pause:UI[LANG].play;}
@@ -187,11 +217,19 @@ function tick(ts){
   }
   requestAnimationFrame(tick);
 }
-document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('on'));b.classList.add('on');cur=M[b.dataset.m];build();goto(0);});
+function pick(m){
+  const jerk=['split','push','squatj'].includes(m);
+  document.querySelectorAll('.tabs:not(.sub) button').forEach(x=>x.classList.toggle('on',jerk?x.dataset.g==='jerk':x.dataset.m===m&&!x.dataset.g));
+  document.querySelectorAll('#jtabs button').forEach(x=>x.classList.toggle('on',x.dataset.m===m));
+  document.getElementById('jtabs').hidden=!jerk;
+  cur=M[m];build();goto(0);
+  try{history.replaceState(null,'','?m='+m+(new URLSearchParams(location.search).get('lang')?'&lang='+LANG:''))}catch(e){}
+}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>pick(b.dataset.m));
 document.getElementById('play').onclick=e=>{playing=!playing;e.target.textContent=playing?UI[LANG].pause:UI[LANG].play;};
 document.getElementById('next').onclick=()=>{let k=step+1;while(k<cur.steps.length-1&&cur.steps[k].mid)k++;goto(Math.min(k,cur.steps.length-1));};
 document.getElementById('prev').onclick=()=>{let k=step-1;while(k>0&&cur.steps[k].mid)k--;goto(Math.max(k,0));};
 document.getElementById('spd').onchange=e=>spd=+e.target.value;
 document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>{LANG=b.dataset.l;try{localStorage.setItem('lm_lang',LANG)}catch(e){}applyLang();build();setCap(step);});
-applyLang();build();goto(0);requestAnimationFrame(tick);
+applyLang();{const m0=new URLSearchParams(location.search).get('m');pick(M[m0]?m0:'snatch');}requestAnimationFrame(tick);
 </script></body></html>
