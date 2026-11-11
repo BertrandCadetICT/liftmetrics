@@ -22,7 +22,8 @@ footer{color:var(--sub);font-size:13px;margin-top:26px}footer a{color:var(--sub)
 </style></head><body><div class="wrap">
 <div class="top"><a href="../"><img src="../img/icon.png" alt="">LiftMetrics</a><span class="lang"><button data-l="fr">FR</button><button data-l="en">EN</button></span></div>
 <h1 data-t="h1">Mouvement idéal</h1><p class="lead" data-t="lead">Arraché et épaulé-jeté de profil, position par position, avec la trajectoire de la barre colorée par phase.</p>
-<div class="tabs"><button data-m="snatch" class="on" data-t="snatch">Arraché</button><button data-m="cj" data-t="cj">Épaulé-jeté</button><button data-m="clean" data-t="clean">Épaulé</button><button data-m="split" data-g="jerk" data-t="jerk">Jeté</button></div>
+<div class="tabs"><button data-m="snatch" class="on" data-t="snatch">Arraché</button><button data-m="cj" data-g="cj" data-t="cj">Épaulé-jeté</button><button data-m="clean" data-t="clean">Épaulé</button><button data-m="split" data-g="jerk" data-t="jerk">Jeté</button></div>
+<div class="tabs sub" id="ctabs" hidden><button data-m="cj" class="on" data-t="split">En fente</button><button data-m="cjpush" data-t="push">Poussé</button><button data-m="cjsquat" data-t="squatj">En squat</button></div>
 <div class="tabs sub" id="jtabs" hidden><button data-m="split" class="on" data-t="split">En fente</button><button data-m="push" data-t="push">Poussé</button><button data-m="squatj" data-t="squatj">En squat</button></div>
 <canvas id="c" width="1040" height="1180"></canvas>
 <div class="cap" id="cap"></div>
@@ -129,7 +130,10 @@ const SQUATJ={name:"Jeté en squat",grip:0,steps:jerkFrom([
  K({t:2.1,bar:[.00,2.04],sh:[-.01,1.45],hip:[-.01,.93],ank:[[-.05,.08],[-.05,.08]],el:0,oh:1,ph:"rec",hold:1.6,
     fr:["Remontée","Remonte debout en gardant la barre au-dessus du milieu du pied, tiens jusqu'au signal."],
     en:["Stand up","Stand up keeping the bar over mid-foot, hold until the down signal."]})])};
-const M={snatch:SNATCH,cj:CJ,clean:CLEAN,split:SPLIT,push:PUSH,squatj:SQUATJ};
+// épaulé-jeté avec jeté poussé ou en squat : épaulé + flexion + impulsion, puis la réception choisie
+function cjWith(J){const st=cp(CJ.steps.slice(0,11));cp(J.steps.slice(3)).forEach(s=>{s.t=+(s.t+2.3).toFixed(3);st.push(s);});return st;}
+const CJPUSH={name:"Épaulé-jeté poussé",grip:0,steps:cjWith(PUSH)}, CJSQUAT={name:"Épaulé-jeté en squat",grip:0,steps:cjWith(SQUATJ)};
+const M={snatch:SNATCH,cj:CJ,cjpush:CJPUSH,cjsquat:CJSQUAT,clean:CLEAN,split:SPLIT,push:PUSH,squatj:SQUATJ};
 // ---------- géométrie
 const lerp=(a,b,u)=>a+(b-a)*u, lp=(p,q,u)=>[lerp(p[0],q[0],u),lerp(p[1],q[1],u)];
 const ease=u=>u<.5?2*u*u:1-2*(1-u)*(1-u);
@@ -218,10 +222,10 @@ function tick(ts){
   requestAnimationFrame(tick);
 }
 function pick(m){
-  const jerk=['split','push','squatj'].includes(m);
-  document.querySelectorAll('.tabs:not(.sub) button').forEach(x=>x.classList.toggle('on',jerk?x.dataset.g==='jerk':x.dataset.m===m&&!x.dataset.g));
-  document.querySelectorAll('#jtabs button').forEach(x=>x.classList.toggle('on',x.dataset.m===m));
-  document.getElementById('jtabs').hidden=!jerk;
+  const jerk=['split','push','squatj'].includes(m), cjm=['cj','cjpush','cjsquat'].includes(m);
+  document.querySelectorAll('.tabs:not(.sub) button').forEach(x=>x.classList.toggle('on',jerk?x.dataset.g==='jerk':cjm?x.dataset.g==='cj':x.dataset.m===m&&!x.dataset.g));
+  document.querySelectorAll('.tabs.sub button').forEach(x=>x.classList.toggle('on',x.dataset.m===m));
+  document.getElementById('jtabs').hidden=!jerk; document.getElementById('ctabs').hidden=!cjm;
   cur=M[m];build();goto(0);
   try{history.replaceState(null,'','?m='+m+(new URLSearchParams(location.search).get('lang')?'&lang='+LANG:''))}catch(e){}
 }
